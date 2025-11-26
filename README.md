@@ -1,0 +1,2 @@
+# latent-flow-control-platform
+API and MLOps platform for controllable Generative AI. Implements a hybrid $\beta$-VAE and Flow-Matching model for semantic image manipulation via a scalable AWS/NestJS architecture.
