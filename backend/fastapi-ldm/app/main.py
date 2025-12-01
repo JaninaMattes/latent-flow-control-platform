@@ -1,9 +1,19 @@
+# app/main.py 
+ 
+# FastApi modulea
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.responses import JSONResponse
 
 from typing import List
 import math
 
+# Custom module
+# from inference.model_loader import load_model
+
+
+# Load model globally ONCE
+# MODEL_PATH = "/models/DiTXL-05x01x01b-last.ckpt"
+# model = load_model(MODEL_PATH, device="cuda")
 
 
 app = FastAPI(
@@ -18,10 +28,10 @@ async def root():
     return {"message": "Hello World"}
 
 
-
 def generate_dummy_sequence(num_steps: int):
     """Generate a dummy sequence of interpolated image filenames."""
     return [f"interpolated_image_step_{i}.png" for i in range(num_steps)]
+
 
 @app.post("/interpolate/")
 async def interpolate_images(
@@ -37,6 +47,14 @@ async def interpolate_images(
     - alpha: value between 0.0 and 1.0
     Returns the interpolated image at the alpha position.
     """
+
+    ALLOWED_TYPES = ["image/png", "image/jpeg"]
+
+    if image1 is None or image2 is None:
+        raise HTTPException(status_code=400, detail="Two images need to be uploaded.")
+    
+    if image1.content_type not in ALLOWED_TYPES or image2.content_type not in ALLOWED_TYPES:
+        raise HTTPException(status_code=400, detail="Only PNG or JPEG images are allowed.")
 
     if steps < 1:
         raise HTTPException(status_code=400, detail="Steps need to be larger than 0.")
@@ -60,3 +78,4 @@ async def interpolate_images(
         "selected_image": selected_image,
         "all_images": interpolated_images
     }
+
