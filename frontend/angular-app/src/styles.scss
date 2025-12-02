@@ -1,0 +1,13 @@
+// src/styles.scss
+
+// Variables (colors, spacing, typography)
+@import './styles/variables';
+
+// Mixins (for reusable patterns)
+@import './styles/mixins';
+
+// Theme definitions (dark/light, CSS variables)
+@import './styles/theme';
+
+// Component-specific global styles
+@import './styles/components';
