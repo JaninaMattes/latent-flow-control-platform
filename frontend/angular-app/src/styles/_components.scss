@@ -1,0 +1,30 @@
+// src/styles/_components.scss
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-base);
+  font-family: 'Inter', 'Roboto', sans-serif;
+}
+
+.button-primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-base);
+
+  &:hover {
+    background-color: var(--color-primary-light);
+  }
+}
+
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.slider {
+  background-color: var(--color-slider-track);
+
+  &::-webkit-slider-thumb {
+    background-color: var(--color-slider-thumb);
+  }
+}
