@@ -1,60 +1,72 @@
-// src/styles/_themes.scss
+// Import SCSS maps
+@import './variables';
 
-$theme-dark: (
-  primary: #DB592A,
-  primary-light: #FF8C42,
-  primary-dark: #a84728,
-  bg: #1e1e1e,
-  surface: #2a2a2a,
-  border: #3c3c3c,
-  border-light: #4a4a4a,
-  text-base: #ffffff,
-  text-secondary: #bbbbbb,
-  text-disabled: #666666,
-  tooltip-bg: #444444,
-  tooltip-text: #e0cfa1,
-  slider-track: #555,
-  slider-thumb: #DB592A
-);
+// Build CSS variables for theme
+@mixin export-tokens {
+  // Brand
+  --color-primary: #{$brand-primary};
+  --color-primary-light: #{$brand-primary-light};
+  --color-primary-dark: #{$brand-primary-dark};
 
-$theme-light: (
-  primary: #DB592A,
-  primary-light: #FF8C42,
-  primary-dark: #a84728,
-  bg: #f5f5f5,
-  surface: #ffffff,
-  border: #dcdcdc,
-  border-light: #eaeaea,
-  text-base: #1e1e1e,
-  text-secondary: #666666,
-  text-disabled: #aaaaaa,
-  tooltip-bg: #f0f0f0,
-  tooltip-text: #333333,
-  slider-track: #ccc,
-  slider-thumb: #DB592A
-);
+  // Text
+  --text-primary: #{$text-primary};
+  --text-secondary: #{$text-secondary};
+  --text-disabled: #{$text-disabled};
 
-@mixin theme-vars($theme-map) {
-  --color-primary: map-get($theme-map, primary);
-  --color-primary-light: map-get($theme-map, primary-light);
-  --color-primary-dark: map-get($theme-map, primary-dark);
+  // Grays
+  --gray-0: #{$gray-0};
+  --gray-50: #{$gray-50};
+  --gray-100: #{$gray-100};
+  --gray-200: #{$gray-200};
+  --gray-300: #{$gray-300};
+  --gray-400: #{$gray-400};
+  --gray-500: #{$gray-500};
+  --gray-600: #{$gray-600};
+  --gray-700: #{$gray-700};
+  --gray-800: #{$gray-800};
+  --gray-900: #{$gray-900};
 
-  --color-bg: map-get($theme-map, bg);
-  --color-surface: map-get($theme-map, surface);
-  --color-border: map-get($theme-map, border);
-  --color-border-light: map-get($theme-map, border-light);
+  // Surfaces
+  --surface-1: #{$surface-1};
+  --surface-2: #{$surface-2};
+  --surface-3: #{$surface-3};
 
-  --color-text-base: map-get($theme-map, text-base);
-  --color-text-secondary: map-get($theme-map, text-secondary);
-  --color-text-disabled: map-get($theme-map, text-disabled);
+  // Component tokens
+  --slider-track: #{$slider-track};
+  --slider-thumb: #{$slider-thumb};
+  --carousel-bg: #{$carousel-bg};
+  --carousel-border: #{$carousel-border};
+  --image-frame-bg: #{$image-frame-bg};
+  --image-frame-border: #{$image-frame-border};
+  --tooltip-bg: #{$tooltip-bg};
+  --tooltip-text: #{$tooltip-text};
+  --icon-color-default: #{$icon-color-default};
+  --icon-color-hover: #{$icon-color-hover};
 
-  --color-tooltip-bg: map-get($theme-map, tooltip-bg);
-  --color-tooltip-text: map-get($theme-map, tooltip-text);
+  // Layout tokens
+  --radius-sm: #{$radius-sm};
+  --radius-md: #{$radius-md};
+  --radius-lg: #{$radius-lg};
 
-  --color-slider-track: map-get($theme-map, slider-track);
-  --color-slider-thumb: map-get($theme-map, slider-thumb);
+  --space-1: #{$space-1};
+  --space-2: #{$space-2};
+  --space-3: #{$space-3};
+  --space-4: #{$space-4};
+  --space-5: #{$space-5};
+  --space-6: #{$space-6};
+
+  // Shadows
+  --shadow-1: #{$shadow-1};
+  --shadow-2: #{$shadow-2};
 }
 
-// Apply CSS variables for each theme
-body[data-theme="dark"] { @include theme-vars($theme-dark); }
-body[data-theme="light"] { @include theme-vars($theme-light); }
+// Light theme
+:root,
+body[data-theme='light'] {
+  @include export-tokens;
+}
+
+// Future: override for dark theme
+body[data-theme='dark'] {
+  @include export-tokens;
+}
