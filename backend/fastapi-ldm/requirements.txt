@@ -1,0 +1,50 @@
+# Core
+timm
+hydra-core
+pillow
+matplotlib
+einops
+timm
+h5py
+pandas
+webdataset
+tensorboard
+wandb
+torch-fidelity
+torchdiffeq
+open_clip_torch
+
+# Git dependency
+git+https://github.com/joh-schb/jutils.git#egg=jutils
+
+# FastAPI ecosystem
+fastapi==0.122.0
+uvicorn==0.38.0
+starlette==0.50.0
+fastapi-cli==0.0.16
+typer==0.20.0
+anyio==4.11.0
+h11==0.16.0
+httptools==0.7.1
+watchfiles==1.1.1
+websockets==15.0.1
+
+# Supporting packages
+annotated-doc==0.0.4
+annotated-types==0.7.0
+click==8.3.1
+idna==3.11
+markdown-it-py==4.0.0
+mdurl==0.1.2
+pydantic==2.12.4
+pydantic_core==2.41.5
+Pygments==2.19.2
+python-dotenv==1.2.1
+PyYAML==6.0.3
+rich==14.2.0
+rich-toolkit==0.16.0
+shellingham==1.5.4
+sniffio==1.3.1
+typing-inspection==0.4.2
+typing_extensions==4.15.0
+uvloop==0.22.1
