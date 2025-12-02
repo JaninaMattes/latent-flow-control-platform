@@ -213,3 +213,4 @@ __marimo__/
 *.pt
 models/
 
+backend/fastapi-ldm/models/*.ckpt
