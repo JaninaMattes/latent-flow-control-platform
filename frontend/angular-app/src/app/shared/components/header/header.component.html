@@ -1,0 +1,32 @@
+<div class="header-wrapper">
+    <div>
+        <!--Application logo and names-->
+        <div class="nav-part start">
+            <div class="logo-img">
+                <img [src]="'assets/images/logo/dark-logo.png'">
+            </div>
+            <div class="app-name">My Android App</div>
+        </div>
+        <!--Additional menu-->
+        <div class="nav-part end">
+            <!--User profile menu-->
+            <!-- <div class="nav-icon"><span class="icon-User"></span></div> -->
+            <div class="nav-icon"><mat-icon aria-hidden="false" aria-label="Home icon" fontIcon="account_circle"></mat-icon></div>
+            <!--Change language menu-->
+            <div class="nav-icon" [matMenuTriggerFor]="languageSettingsMenu"><mat-icon aria-hidden="false" aria-label="Language icon" fontIcon="language"></mat-icon></div>
+            <mat-menu #languageSettingsMenu="matMenu">
+                <button mat-menu-item (click)="changeLang('en')">English</button>
+                <button mat-menu-item (click)="changeLang('de')">Deutsch</button>
+            </mat-menu>
+            <!--Change color theme menu-->
+            <div class="nav-icon" [matMenuTriggerFor]="colorSettingsMenu"><mat-icon aria-hidden="false" aria-label="Settings icon" fontIcon="settings"></mat-icon></div>
+            <mat-menu #colorSettingsMenu="matMenu">
+                <button mat-menu-item (click)="colorThemeMenu">Theme</button>
+            </mat-menu>
+            <mat-menu #colorThemeMenu="matMenu">
+                <button mat-menu-item (click)="setColorTheme('light')">Light</button>
+                <button mat-menu-item (click)="setColorTheme('dark')">Dark</button>
+            </mat-menu>
+        </div>
+    </div>
+</div>

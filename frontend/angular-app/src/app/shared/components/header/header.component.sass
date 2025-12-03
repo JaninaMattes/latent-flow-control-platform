@@ -1,0 +1,46 @@
+// styles.sass
+// @use 'base'
+
+.header-wrapper
+    width: 100%
+    position: sticky
+    z-index: 999
+    top: 0
+    background-color: var(--bgColorPrimary)
+    color: var(--textColorPrimary)
+
+    > div
+        display: flex 
+        justify-content: space-between
+        border: 1px solid red
+
+.app-name
+    margin: 10px
+    margin-left: 15px
+    color: var(--textColorPrimary)
+
+.logo-img
+    margin: 10px
+    img
+        height: 50px
+
+.nav-icon
+    font-size: 24px
+    cursor: pointer
+    margin: 10px
+    padding: 2px
+    justify-content: center
+
+.nav-part
+    display: flex
+    flex-direction: row
+    
+    > *
+        display: flex
+        justify-content: center
+        flex-direction: column
+
+    &.start
+        justify-content: flex-start
+    &.end
+        justify-content: flex-end
