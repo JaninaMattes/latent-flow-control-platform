@@ -2,7 +2,8 @@
     <div>
         <!--Application logo and names-->
         <div class="nav-part start">
-            <button mat-menu-item class="btn-menu-item">
+            <button mat-menu-item class="btn-menu-item" routerLink="/home" routerLinkActive="active-btn"
+                [routerLinkActiveOptions]="{ exact: true }">
                 <mat-icon></mat-icon>
                 <div class="app-name">My Angular App</div>
             </button>
@@ -19,7 +20,8 @@
             </button>
 
             <!--Change language menu-->
-            <button mat-menu-item class="btn-menu-item has-icon" [matMenuTriggerFor]="languageSettingsMenu" aria-label="Change language">
+            <button mat-menu-item class="btn-menu-item has-icon" [matMenuTriggerFor]="languageSettingsMenu"
+                aria-label="Change language">
                 <mat-icon fontIcon="language"></mat-icon>
             </button>
             <mat-menu #languageSettingsMenu="matMenu">

@@ -1,39 +1,46 @@
-// styles.sass
-// @use 'app.component'
-
 .footer-wrapper
     height: 55px
     width: 100%
     position: fixed
     bottom: 0
+    left: 0
+    right: 0
     z-index: 999
-    left: 0px
-    right: 0px
-    margin-bottom: 0px
     background-color: var(--bgColorPrimary)
     color: var(--textColorPrimary)
-    border: 1px solid red
-
-.footer 
-    width: 100%
-    max-width: 1440px
-    height: 7%
-    bottom: 0px
+    font-size: 12px
     display: flex
-    justify-content: space-around
-    flex-wrap: wrap
+    align-items: center
+
+    > .footer
+        width: 100%
+        max-width: 1400px
+        margin: 0 auto
+        padding: 0 24px
+        display: flex
+        align-items: center
+        justify-content: space-between   
+        gap: 24px
+
+
+.footer
+    display: flex
+    align-items: center
+    justify-content: space-between
+    width: 100%
 
     > *
-        margin: 10px
         display: flex
-        flex-direction: column
-        justify-content: center
-        border: 1px solid red
+        align-items: center
+        margin: 0
+        padding: 0
+        color: var(--textColorPrimary)
+
 
 .footer-link
-    margin-left: 20px
-    cursor: pointer
     color: var(--textColorPrimary)
+    cursor: pointer
+    text-decoration: none     
 
     &:hover
         text-decoration: underline

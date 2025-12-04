@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth/services/auth-guard.service';
 import { HomeComponent } from './home/home.component';
+import { GalleriaComponent } from './galleria/galleria.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,13 @@ const routes: Routes = [
     component: HomeComponent,
     canActivate: [AuthGuard]
   },
+  {
+    path: 'galleria',
+    component: GalleriaComponent,
+    canActivate: [AuthGuard]
+  },
+
+
   {
     path: '**',
     redirectTo: '/',
