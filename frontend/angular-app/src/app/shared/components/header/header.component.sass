@@ -1,46 +1,78 @@
-// styles.sass
-// @use 'base'
-
 .header-wrapper
+    height: 64px
     width: 100%
     position: sticky
     z-index: 999
     top: 0
-    background-color: var(--bgColorPrimary)
-    color: var(--textColorPrimary)
+    background-color: var(--highlightColorPrimary)
+    color: var(--highlightColorSecondary)
+    font-size: 16px
+    font-weight: 500
 
     > div
-        display: flex 
+        display: flex
         justify-content: space-between
-        border: 1px solid red
+        align-items: center
+        max-width: 1400px
+        margin: 0 auto
+        padding: 0 24px
 
 .app-name
-    margin: 10px
-    margin-left: 15px
-    color: var(--textColorPrimary)
+    margin: 0 16px 0 0
+    color: var(--highlightColorSecondary)
 
 .logo-img
-    margin: 10px
-    img
-        height: 50px
-
-.nav-icon
-    font-size: 24px
-    cursor: pointer
-    margin: 10px
-    padding: 2px
-    justify-content: center
+    margin-right: 8px
 
 .nav-part
     display: flex
     flex-direction: row
-    
+    align-items: center
+    padding: 5px
+    margin: 10px
+    max-width: 600px
+    gap: 8px
+
     > *
         display: flex
+        align-items: center
         justify-content: center
-        flex-direction: column
+        margin: 0
+        padding: 0
 
     &.start
         justify-content: flex-start
+
     &.end
         justify-content: flex-end
+
+        .theme-toggle
+            margin-left: 16px
+
+    
+.btn-menu-item
+    color: var(--highlightColorSecondary) !important
+    font-weight: bold
+    border-radius: 30px
+    height: 40px
+    min-width: 80px
+    width: auto
+    margin: 8px
+    padding: 0 16px
+    display: flex
+    align-items: center
+    justify-content: center
+
+    &:hover
+        background: var(--bgHoverColor)
+
+    &.has-icon
+        width: 64px
+        min-width: 0
+        padding: 0
+
+    mat-icon
+        width: 24px
+        height: 24px
+        margin: 0
+        color: inherit !important

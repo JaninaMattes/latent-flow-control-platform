@@ -2,35 +2,34 @@
     <div>
         <!--Application logo and names-->
         <div class="nav-part start">
-            <div class="logo-img">
-                <img [src]="'assets/images/logo/dark-logo.png'" alt="Application logo">
-            </div>
-            <div class="app-name">My Android App</div>
+            <button mat-menu-item class="btn-menu-item">
+                <mat-icon></mat-icon>
+                <div class="app-name">My Angular App</div>
+            </button>
+            <button mat-menu-item class="btn-menu-item">Gallery</button>
         </div>
+
         <!--Additional menu-->
         <div class="nav-part end">
+
+            <!--Change color theme toggle-->
             <!--User profile menu-->
-            <button class="nav-icon" mat-icon-button aria-label="User profile">
+            <button mat-menu-item class="btn-menu-item has-icon" aria-label="User profile">
                 <mat-icon fontIcon="account_circle"></mat-icon>
             </button>
-            
+
             <!--Change language menu-->
-            <button class="nav-icon" [matMenuTriggerFor]="languageSettingsMenu" mat-icon-button aria-label="Change language">
+            <button mat-menu-item class="btn-menu-item has-icon" [matMenuTriggerFor]="languageSettingsMenu" aria-label="Change language">
                 <mat-icon fontIcon="language"></mat-icon>
             </button>
             <mat-menu #languageSettingsMenu="matMenu">
                 <button mat-menu-item (click)="changeLang('en')">English</button>
                 <button mat-menu-item (click)="changeLang('de')">Deutsch</button>
             </mat-menu>
-            
-            <!--Change color theme toggle-->
-            <div class="nav-icon">
-                <mat-slide-toggle 
-                    [checked]="isDarkTheme" 
-                    (change)="toggleTheme($event)"
-                    aria-label="Toggle dark theme">
-                </mat-slide-toggle>
-            </div>
+
+            <mat-slide-toggle [checked]="isDarkTheme" (change)="toggleTheme($event)" aria-label="Toggle dark theme">
+            </mat-slide-toggle>
         </div>
+
     </div>
 </div>
