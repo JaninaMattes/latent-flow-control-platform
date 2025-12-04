@@ -8,6 +8,7 @@ import { ColorThemeService } from '../../services/themes.service';
   styleUrls: ['./header.component.sass']
 })
 export class HeaderComponent implements OnInit {
+  isDarkTheme: boolean = false;
 
   constructor(
     private translateService: TranslateService, 
@@ -16,16 +17,23 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     const colorTheme: 'light' | 'dark' = JSON.parse(localStorage.getItem('colorTheme') as string);
-    this.setColorTheme(colorTheme? colorTheme: 'dark');
+    const theme = colorTheme ? colorTheme : 'dark';
+    this.isDarkTheme = theme === 'dark';
+    this.setColorTheme(theme);
   }
 
   changeLang(langCode: string): void {
     console.log('Changed language to:', langCode);
   }
 
+  toggleTheme(event: any): void {
+    this.isDarkTheme = event.checked;
+    const mode: 'light' | 'dark' = this.isDarkTheme ? 'dark' : 'light';
+    this.setColorTheme(mode);
+  }
+
   setColorTheme(mode: 'light' | 'dark'): void {
     this.colorThemeService.setTheme(mode);
     localStorage.setItem('colorTheme', JSON.stringify(mode));
   }
-
 }
