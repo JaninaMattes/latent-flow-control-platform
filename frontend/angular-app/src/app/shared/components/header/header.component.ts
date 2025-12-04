@@ -22,6 +22,10 @@ export class HeaderComponent implements OnInit {
     this.setColorTheme(theme);
   }
 
+  selectBtn(selectedBtn: string): void {
+    localStorage.setItem('colorTheme', JSON.stringify(selectedBtn));
+  }
+
   changeLang(langCode: string): void {
     console.log('Changed language to:', langCode);
   }
