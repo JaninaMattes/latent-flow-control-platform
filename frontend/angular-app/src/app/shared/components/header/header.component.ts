@@ -11,13 +11,13 @@ export class HeaderComponent implements OnInit {
   isDarkTheme: boolean = false;
 
   constructor(
-    private translateService: TranslateService, 
-    private colorThemeService: ColorThemeService
+    private readonly translateService: TranslateService, 
+    private readonly colorThemeService: ColorThemeService
   ) { }
 
   ngOnInit(): void {
     const colorTheme: 'light' | 'dark' = JSON.parse(localStorage.getItem('colorTheme') as string);
-    const theme = colorTheme ? colorTheme : 'dark';
+    const theme = colorTheme || 'dark';
     this.isDarkTheme = theme === 'dark';
     this.setColorTheme(theme);
   }

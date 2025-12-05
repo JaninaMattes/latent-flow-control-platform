@@ -1,14 +1,14 @@
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, RouterStateSnapshot, UrlTree } from "@angular/router";
-import { catchError, Observable, of, switchMap } from "rxjs";
-import { SpotifyAuthService } from "./spotify-auth.service";
+import { Observable } from "rxjs";
+import { AppAuthService } from "./app-auth.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthGuard implements CanActivate, CanActivateChild {
     
-    constructor(private authService: SpotifyAuthService) {}
+    constructor(private readonly authService: AppAuthService) {}
 
     canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
         return this.canActivate(childRoute, state);

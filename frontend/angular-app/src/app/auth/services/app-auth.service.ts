@@ -5,8 +5,8 @@ import { v4 as uuid } from 'uuid';
 import { NGXLogger } from "ngx-logger";
 import { BehaviorSubject, filter, Observable, of, switchMap } from "rxjs";
 import { environment } from "src/environments/environment";
-import { ISpotifyResult, SpotifyAuthUser } from "../../models/spotify-auth-user.model";
-import { SpotifyUserService } from "./spotify-user.services";
+import { IUserResult, IAppAuthUser } from "../../models/spotify-auth-user.model";
+import {  AppUserService } from "./app-user.services";
 
 const ID_TOKEN_KEY = 'id_token';
 const ACCESS_TOKEN_KEY = 'access_token';
@@ -16,10 +16,10 @@ const EXP_HINT = 'expires_at';
 @Injectable({
     providedIn: 'root'
 })
-export class SpotifyAuthService {
+export class AppAuthService {
 
-    private authUserSubject: BehaviorSubject<SpotifyAuthUser> = new BehaviorSubject<SpotifyAuthUser>(this.spotifyUser);
-    public authUser$: Observable<SpotifyAuthUser> = this.authUserSubject.pipe(filter(item => Boolean(item)));
+    private readonly authUserSubject: BehaviorSubject<IAppAuthUser> = new BehaviorSubject<IAppAuthUser>(this.spotifyUser);
+    public authUser$: Observable<IAppAuthUser> = this.authUserSubject.pipe(filter(item => Boolean(item)));
 
     private get router(): Router{
         return this.injector.get(Router);
@@ -28,7 +28,7 @@ export class SpotifyAuthService {
     private get spotifyUser(): any {
         const user = localStorage.getItem(ID_TOKEN_KEY);
         if (user) {
-            return this.decodeToken<SpotifyAuthUser>(user);
+            return this.decodeToken<IAppAuthUser>(user);
         }
         return null;
     }
@@ -38,9 +38,9 @@ export class SpotifyAuthService {
     }
 
     constructor(
-        private injector: Injector,
-        private httpClient: HttpClient,
-        private userService: SpotifyUserService
+        private readonly injector: Injector,
+        private readonly httpClient: HttpClient,
+        private readonly userService:  AppUserService
     ){}
 
     public login(redirectTo: string): void {
@@ -53,7 +53,7 @@ export class SpotifyAuthService {
 
         const url = `${environment.testApiUrl}/spotify-auth/login`;
         const header = { 'Access-Control-Allow-Origin': '*' };
-        const authObs$ = this.httpClient.get(url, { headers: header }) as Observable<ISpotifyResult>;
+        const authObs$ = this.httpClient.get(url, { headers: header }) as Observable<IUserResult>;
         authObs$.pipe(
             switchMap( res => {
                 this.handleLoginCallback(res);
@@ -72,7 +72,7 @@ export class SpotifyAuthService {
         return this.isValidAccessToken(localStorage.getItem(ACCESS_TOKEN_KEY), now)
     }
 
-    public handleLoginCallback(resp: ISpotifyResult): void {
+    public handleLoginCallback(resp: IUserResult): void {
         const storedNonce = localStorage.getItem('login_info');
         if (storedNonce) {
             this.addEncodedTokenToStorage(ID_TOKEN_KEY, resp.user);
@@ -92,7 +92,7 @@ export class SpotifyAuthService {
         // }
         const userToken = localStorage.getItem(ID_TOKEN_KEY);
         if (userToken) {
-            this.authUserSubject.next(this.decodeToken<SpotifyAuthUser>(userToken));
+            this.authUserSubject.next(this.decodeToken<IAppAuthUser>(userToken));
         }
     }
 
@@ -127,7 +127,7 @@ export class SpotifyAuthService {
             console.log('No access-token found.')
             return false;
         }
-        const decodedToken = this.decodeToken<SpotifyAuthUser>(token);
+        const decodedToken = this.decodeToken<IAppAuthUser>(token);
         if (decodedToken[EXP_FIELD] < now) {
             this.removeTokenFromStorage();
         }

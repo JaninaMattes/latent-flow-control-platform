@@ -3,7 +3,7 @@ import { ITheme } from "src/app/shared/interfaces/ITheme"
 export const lightTheme: ITheme = {
     bgColorPrimary: "#FFFFFF",
     bgColorSecondary: "#d8d8d8ff",
-    bgColorTertiary: "#dbd9dd",
+    bgColorTertiary: "#c7c7c7ff",
     btnColorPrimar: "#3f51b5",
     bgHoverColor: "#90a8d7ff",
     loadingColorGradient: "",
@@ -19,7 +19,7 @@ export const lightTheme: ITheme = {
 export const darkTheme: ITheme = {
     bgColorPrimary: "#000000",
     bgColorSecondary: "#001b3f",
-    bgColorTertiary:  "#dbd9dd",
+    bgColorTertiary:  "#9f9ea0ff",
     btnColorPrimar: "#3f51b5",
     bgHoverColor: "#90a8d7ff",
     loadingColorGradient: "#25E9D9",

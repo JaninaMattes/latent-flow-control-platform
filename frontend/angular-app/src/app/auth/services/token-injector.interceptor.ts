@@ -2,7 +2,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/c
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
-import { SpotifyAuthService } from "./spotify-auth.service";
+import { SpotifyAuthService } from "./app-auth.service";
 
 @Injectable()
 export class AccessTokenInjector implements HttpInterceptor {
