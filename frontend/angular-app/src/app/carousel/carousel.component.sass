@@ -1,52 +1,44 @@
-.carousel-wrapper {
+.carousel-wrapper
+  width: 100%
+  overflow-x: auto
+  padding-bottom: 12px
+
+.carousel
+  display: flex
+  gap: 16px
+  scroll-snap-type: x mandatory
+  overflow-x: auto
+  padding: 8px
+
+.image-card
+  background-color: var(--bgColorPrimary)
+  box-shadow: 0 2px 8px var(--bgColorTertiary)
+  scroll-snap-align: start
+  min-width: 250px
+  border-radius: 12px
+  padding: 12px
+
+.image-container
+  position: relative
+
+  img
     width: 100%
-    overflow-x: auto
-    padding-bottom: 12px
-}
-
-.carousel {
-    display: flex
-    gap: 16px
-    scroll-snap-type: x mandatory
-    overflow-x: auto
-    padding: 8px
-}
-
-.image-card {
-    scroll-snap-align: start
-    min-width: 250px
-    background: var(--surface-card, #fff)
+    height: auto
     border-radius: 12px
-    padding: 12px
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1)
-}
 
-.image-container {
-    position: relative
+.heart-btn
+  position: absolute
+  right: 8px
+  top: 8px
+  background: white !important
+  border-radius: 50%
 
-    img {
-        width: 100%
-        height: auto
-        border-radius: 12px
-    }
-}
+.title
+  margin-top: 10px
+  font-size: 14px
+  font-weight: 500
+  text-align: center
 
-.heart-btn {
-    position: absolute
-    right: 8px
-    top: 8px
-    background: white !important
-    border-radius: 50%
-}
-
-.title {
-    margin-top: 10px
-    font-size: 14px
-    font-weight: 500
-    text-align: center
-}
-
-.select-area {
-    margin-top: 20px
-    text-align: center
-}
+.select-area
+  margin-top: 20px
+  text-align: center
