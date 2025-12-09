@@ -1,26 +1,18 @@
-import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, RouterStateSnapshot, UrlTree } from "@angular/router";
-import { Observable } from "rxjs";
-import { AppAuthService } from "./app-auth.service";
+import { inject } from '@angular/core';
+import { CanActivateFn, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { GoogleAuthService } from './google-auth.service';
+import { map } from 'rxjs';
 
-@Injectable({
-    providedIn: 'root'
-})
-export class AuthGuard implements CanActivate, CanActivateChild {
-    
-    constructor(private readonly authService: AppAuthService) {}
+export const AuthGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+  const auth = inject(GoogleAuthService);
 
-    canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-        return this.canActivate(childRoute, state);
-    }
+  return auth.checkAuth().pipe(
+    map(isAuthenticated => {
+      if (isAuthenticated) return true;
+      auth.login(state.url); // redirect to backend login
+      return false;
+    })
+  );
+};
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-        if (this.authService.isUserAuthenticated()){
-            this.authService.addLoggedInUser();
-            return true;
-        }
-        this.authService.login(state.url);
-        return false;
-    }
-
-}
+export const authChildGuard = AuthGuard;

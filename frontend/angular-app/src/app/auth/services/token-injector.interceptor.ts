@@ -2,12 +2,12 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/c
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
-import { SpotifyAuthService } from "./app-auth.service";
+import { GoogleAuthService } from "./google-auth.service";
 
 @Injectable()
 export class AccessTokenInjector implements HttpInterceptor {
     
-    constructor(private authService: SpotifyAuthService) {}
+    constructor(private readonly authService: GoogleAuthService) {}
 
     private readonly tokenUrls = [
         environment.testApiUrl,
