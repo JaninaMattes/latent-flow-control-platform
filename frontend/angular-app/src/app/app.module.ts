@@ -17,6 +17,8 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { GalleriaComponent } from './galleria/galleria.component';
 import { ImageCompareComponent } from './image-compare/image-compare.component';
 import { SliderThumbComponent } from './slider-thumb/slider-thumb.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 export function createTranslationLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
@@ -26,11 +28,12 @@ const modules = [
   MatSliderModule,
   BrowserModule,
   BrowserAnimationsModule,
+  MatButtonModule,
+  MatIconModule,
   HttpClientModule,
-  SharedModule, // All shared modules
   LoggerModule.forRoot({
     level: NgxLoggerLevel.TRACE, // remove later just for debugging
-    disableConsoleLogging: false
+    disableConsoleLogging: false,
   }),
   TranslateModule.forRoot({
     defaultLanguage: 'en',
@@ -38,10 +41,12 @@ const modules = [
       provide: TranslateLoader,
       useFactory: createTranslationLoader,
       deps: [HttpClient],
-    }
+    },
   }),
-  AppRoutingModule
-]
+  // Application Modules
+  SharedModule,
+  AppRoutingModule,
+];
 
 @NgModule({
   declarations: [
@@ -52,11 +57,11 @@ const modules = [
     CarouselComponent,
     GalleriaComponent,
     ImageCompareComponent,
-    SliderThumbComponent
+    SliderThumbComponent,
   ],
   imports: modules,
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

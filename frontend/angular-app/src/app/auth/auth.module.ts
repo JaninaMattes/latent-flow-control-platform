@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
-import { SpotifyAuthService } from "./services/app-auth.service";
+import { GoogleAuthService } from "./services/google-auth.service";
 
 @NgModule({
     imports: [],
-    providers: [SpotifyAuthService],
+    providers: [GoogleAuthService],
   })
-  export class AuthSpotifyClientModule  { }
+  export class AuthAppClientModule  { }

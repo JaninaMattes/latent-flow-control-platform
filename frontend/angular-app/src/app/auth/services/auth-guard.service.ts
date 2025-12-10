@@ -9,7 +9,7 @@ export const AuthGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
   return auth.checkAuth().pipe(
     map(isAuthenticated => {
       if (isAuthenticated) return true;
-      auth.login(state.url); // redirect to backend login
+      auth.login(); // get GoogleOAuth 
       return false;
     })
   );

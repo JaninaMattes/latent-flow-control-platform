@@ -20,24 +20,6 @@ export class GoogleAuthService {
     private readonly router: Router
   ) {}
 
-  /** Check if user is authenticated (via HttpOnly cookie) */
-  public checkAuth() {
-    return this.http
-      .get<IGoogleAuthUser>(`${environment.apiUrl}/google-auth/me`, {
-        withCredentials: true,
-      })
-      .pipe(
-        map((user) => {
-          this.authUserSubject.next(user);
-          return true;
-        }),
-        catchError(() => {
-          this.authUserSubject.next(null);
-          return of(false);
-        })
-      );
-  }
-
   /** Start login (redirect user to NestJS OAuth route) */
   public login() {
     globalThis.location.href = `${environment.apiUrl}/google-auth/login`;
@@ -53,6 +35,24 @@ export class GoogleAuthService {
         this.authUserSubject.next(null);
         this.router.navigate(['/home']);
       });
+  }
+
+    /** Check if user is authenticated (via HttpOnly cookie) */
+  public checkAuth() {
+    return this.http
+      .get<IGoogleAuthUser>(`${environment.apiUrl}/google-auth/me`, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((user) => {
+          this.authUserSubject.next(user);
+          return true;
+        }),
+        catchError(() => {
+          this.authUserSubject.next(null);
+          return of(false);
+        })
+      );
   }
 
   /** Returns the currently authenticated user */
