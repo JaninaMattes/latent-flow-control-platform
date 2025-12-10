@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
-  title = 'music-player-fe';
+  title = 'angular-app-fe';
 
   constructor(translate: TranslateService){
     translate.setDefaultLang('en');
