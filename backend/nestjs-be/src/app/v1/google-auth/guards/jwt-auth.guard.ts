@@ -9,12 +9,10 @@ export class JWTAuthGuard extends AuthGuard('jwt') {
     handleRequest<TUser = Claims>(err: any, user: any, info: any, context: any, status?: any): TUser {
         try {
             const result = super.handleRequest<Claims>(err, user, info, context, status);
-            this.logger.debug(`User was successfully authenticated.`);
+            this.logger.debug(`User successfully authenticated via JWT cookie.`);
             return result as unknown as TUser;
         } catch (error) {
-            const authHeaderPresent = context.switchToHttp().getRequest()?.headers?.authorization;
-            this.logger.debug(`User unauthenticated. Authorization header present: ${authHeaderPresent}`);
-            this.logger.debug(`Error message: ${error?.message}`);
+            this.logger.warn(`User unauthenticated. Error: ${error?.message}`);
             throw new UnauthorizedException('User is not authorized to perform this action.');
         }
     }

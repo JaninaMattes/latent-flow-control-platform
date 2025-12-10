@@ -1,19 +1,29 @@
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import { Strategy } from 'passport-jwt';
+import { Request } from 'express';
+import { ConfigService } from '@nestjs/config';
+import { IUserPayload } from '../../models/google-auth-user.model';
 
+@Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-  constructor() {
+  private readonly logger = new Logger(JwtStrategy.name);
+
+  constructor(private readonly configService: ConfigService) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: (req: Request) => req.cookies?.jwt,
       ignoreExpiration: false,
-      secretOrKey: process.env.JWT_SECRET,
+      secretOrKey: configService.get<string>('JWT_SECRET'),
     });
   }
 
-  async validate(payload: {
-    name: string;
-    sub: string;
-  }): Promise<{ name: string; sub: string }> {
+  async validate(payload: IUserPayload) {
+   if (!payload?.sub) {
+      this.logger.warn(`JWT missing sub claim: ${JSON.stringify(payload)}`);
+      throw new UnauthorizedException('Invalid token: sub claim missing.');
+    }
+
+    this.logger.debug(`JWT validated for user: ${payload.name}`);
     return payload;
   }
 }

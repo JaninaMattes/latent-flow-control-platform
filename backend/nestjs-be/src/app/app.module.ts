@@ -5,7 +5,7 @@ import { V1Module } from './v1/v1.module';
 
 const imports = [
   ConfigModule.forRoot({
-    envFilePath: ['.env.dev'],
+    envFilePath: ['.env.dev'], // setup env files
     isGlobal: true
   }),
   HttpModule,

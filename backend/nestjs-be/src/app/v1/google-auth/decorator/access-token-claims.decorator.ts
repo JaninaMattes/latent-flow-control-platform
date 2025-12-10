@@ -13,6 +13,6 @@ export interface Claims {
 export const AccessTokenClaims = createParamDecorator(
     (_data: unknown, ctx: ExecutionContext) => {
         const { user } = ctx.switchToHttp().getRequest<{ user: Claims }>();
-        return user;
+        return user ?? null; // user is null if not exists
     }
 );
