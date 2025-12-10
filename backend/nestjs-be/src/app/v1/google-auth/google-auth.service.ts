@@ -16,12 +16,12 @@ export class GoogleAuthService {
     // TODO: save/update user in DB here
     // await this.userService.upsertUser(user);
     this.logger.debug(`User successfully logged in via Google API: ${user.name}`);
-
     return this.generateJwt(user);
   }
 
   public async generateJwt(user: IUserPayload) {
-    return this.jwtService.sign(user, { expiresIn: this.configService.get<string>('JWT_EXPIRATION_TIME_SECONDS') || '1d' });
-  }  
+    const payload = { sub: user.sub, email: user.email, name: user.name }; 
+    return this.jwtService.sign(payload); 
+  }
 
 }

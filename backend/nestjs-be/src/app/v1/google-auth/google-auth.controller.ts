@@ -48,17 +48,18 @@ export class GoogleAuthController {
     res.cookie('jwt', jwt, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: 'lax', // cross-origin
       maxAge: 1000 * 60 * 60 * 24,
     });
 
-    return res.redirect(this.configService.get<string>('FRONTEND_URL'));
+    this.logger.warn('Set cookies:', res.cookie);
+    return res.redirect(`${this.configService.get<string>('FRONTEND_URL')}/content`);
   }
 
   @ApiOperation({ summary: 'Get current logged-in user' })
   @UseGuards(JWTAuthGuard)
   @Get('/me')
-  async getCurrentUser(@Req() req: { user: any }) {
+  async getCurrentUser(@Req() req: any) {
     const user = req.user;
 
     if (!user) throw new UnauthorizedException('User not logged in');
@@ -77,7 +78,7 @@ export class GoogleAuthController {
     res.clearCookie('jwt', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: 'lax', // cross-origin
     });
 
     return { success: true };
