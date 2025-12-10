@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ColorThemeService } from '../../services/themes.service';
+import { LocalStorageService } from '../../services/local-storage.service';
 
 @Component({
   selector: 'app-header',
@@ -12,22 +13,25 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private readonly translateService: TranslateService, 
-    private readonly colorThemeService: ColorThemeService
+    private readonly colorThemeService: ColorThemeService,
+    private readonly localStorageService: LocalStorageService
   ) { }
 
   ngOnInit(): void {
-    const colorTheme: 'light' | 'dark' = JSON.parse(localStorage.getItem('colorTheme') as string);
-    const theme = colorTheme || 'dark';
+    // Use LocalStorageService to read the theme
+    const savedTheme = this.localStorageService.getItem<'light' | 'dark'>('colorTheme');
+    const theme = savedTheme || 'dark';
     this.isDarkTheme = theme === 'dark';
     this.setColorTheme(theme);
   }
 
-  selectBtn(selectedBtn: string): void {
-    localStorage.setItem('colorTheme', JSON.stringify(selectedBtn));
+  selectBtn(selectedBtn: 'light' | 'dark'): void {
+    this.setColorTheme(selectedBtn);
   }
 
   changeLang(langCode: string): void {
     console.log('Changed language to:', langCode);
+    this.localStorageService.setItem('selectedLang', langCode);
   }
 
   toggleTheme(event: any): void {
@@ -38,6 +42,6 @@ export class HeaderComponent implements OnInit {
 
   setColorTheme(mode: 'light' | 'dark'): void {
     this.colorThemeService.setTheme(mode);
-    localStorage.setItem('colorTheme', JSON.stringify(mode));
+    this.localStorageService.setItem('colorTheme', mode);
   }
 }

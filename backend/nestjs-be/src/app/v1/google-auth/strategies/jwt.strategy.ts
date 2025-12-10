@@ -18,7 +18,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: IUserPayload) {
-    this.logger.debug(`JWT validated for user: ${payload.sub}`);
+    this.logger.debug(`JWT validated for user: ${payload.name}`);
     if (!payload?.sub) throw new UnauthorizedException('Invalid token');
     return payload;
   }

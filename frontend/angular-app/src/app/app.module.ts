@@ -51,11 +51,11 @@ const modules = [
 @NgModule({
   declarations: [
     AppComponent,
-    CardsComponent,
     HomeComponent,
     ContentComponent,
-    CarouselComponent,
     GalleriaComponent,
+    CardsComponent,
+    CarouselComponent,
     ImageCompareComponent,
     SliderThumbComponent,
   ],
