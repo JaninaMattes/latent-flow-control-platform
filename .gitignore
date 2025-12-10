@@ -211,6 +211,5 @@ __marimo__/
 *.pth
 *.safetensors
 *.pt
-models/
 
 backend/fastapi-ldm/models/*.ckpt
