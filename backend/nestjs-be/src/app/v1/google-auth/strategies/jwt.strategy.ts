@@ -18,12 +18,8 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: IUserPayload) {
-   if (!payload?.sub) {
-      this.logger.warn(`JWT missing sub claim: ${JSON.stringify(payload)}`);
-      throw new UnauthorizedException('Invalid token: sub claim missing.');
-    }
-
-    this.logger.debug(`JWT validated for user: ${payload.name}`);
+    this.logger.debug(`JWT validated for user: ${payload.sub}`);
+    if (!payload?.sub) throw new UnauthorizedException('Invalid token');
     return payload;
   }
 }
