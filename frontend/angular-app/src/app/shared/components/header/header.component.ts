@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { ColorThemeService } from '../../services/themes.service';
+import { LocalStorageService } from '../../services/local-storage.service';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-header',
@@ -11,33 +13,23 @@ export class HeaderComponent implements OnInit {
   isDarkTheme: boolean = false;
 
   constructor(
-    private readonly translateService: TranslateService, 
-    private readonly colorThemeService: ColorThemeService
+    private readonly translate: LanguageService, 
+    private readonly themeService: ColorThemeService,
   ) { }
 
   ngOnInit(): void {
-    const colorTheme: 'light' | 'dark' = JSON.parse(localStorage.getItem('colorTheme') as string);
-    const theme = colorTheme || 'dark';
-    this.isDarkTheme = theme === 'dark';
-    this.setColorTheme(theme);
-  }
-
-  selectBtn(selectedBtn: string): void {
-    localStorage.setItem('colorTheme', JSON.stringify(selectedBtn));
+    // Use LocalStorageService to read the theme
+    this.themeService.theme$.subscribe(theme => {
+      this.isDarkTheme = theme === 'dark';
+    });
   }
 
   changeLang(langCode: string): void {
-    console.log('Changed language to:', langCode);
+    this.translate.setLanguage(langCode);
   }
 
-  toggleTheme(event: any): void {
-    this.isDarkTheme = event.checked;
-    const mode: 'light' | 'dark' = this.isDarkTheme ? 'dark' : 'light';
-    this.setColorTheme(mode);
-  }
-
-  setColorTheme(mode: 'light' | 'dark'): void {
-    this.colorThemeService.setTheme(mode);
-    localStorage.setItem('colorTheme', JSON.stringify(mode));
+  toggleTheme(event: MatSlideToggleChange) {
+    const mode = event.checked ? 'dark' : 'light';
+    this.themeService.setTheme(mode);
   }
 }
