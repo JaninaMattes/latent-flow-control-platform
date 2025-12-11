@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { UserActivityService } from './auth/services/google-user-inactivity.service';
-import { ColorThemeService } from './shared/services/themes.service';
 
 @Component({
   selector: 'app-root',
@@ -13,14 +12,12 @@ export class AppComponent {
 
   constructor(
     private readonly translate: TranslateService,
-    private readonly colorThemeService: ColorThemeService,
     private readonly activity: UserActivityService
   ) {
     this.translate.setDefaultLang('en');
-    this.translate.use('use');
-  }
+    this.translate.use('en');
 
-  public onInit() {
+    // Initialize user activity tracking
     this.activity.init();
   }
 }

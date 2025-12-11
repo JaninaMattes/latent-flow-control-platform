@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ColorThemeService } from '../../services/themes.service';
-import { LocalStorageService } from '../../services/local-storage.service';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { LanguageService } from '../../services/language.service';
 
@@ -14,7 +13,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private readonly translate: LanguageService, 
-    private readonly themeService: ColorThemeService,
+    private readonly themeService: ColorThemeService
   ) { }
 
   ngOnInit(): void {
