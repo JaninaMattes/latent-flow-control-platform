@@ -2,21 +2,34 @@
     <div>
         <!--Application logo and names-->
         <div class="nav-part start">
-            <button mat-menu-item class="btn-menu-item" routerLink="/home" routerLinkActive="active-btn"
+            <button mat-menu-item class="btn-menu-item" routerLink="/content" routerLinkActive="active-btn"
                 [routerLinkActiveOptions]="{ exact: true }">
                 <mat-icon></mat-icon>
                 <div class="app-name">My Angular App</div>
             </button>
-            <button mat-menu-item class="btn-menu-item" routerLink="/galleria" routerLinkActive="active-btn">Gallery</button>
+            <button mat-menu-item class="btn-menu-item" routerLink="/galleria"
+                routerLinkActive="active-btn">Gallery</button>
         </div>
 
         <!--Additional menu-->
         <div class="nav-part end">
 
-            <!--Change color theme toggle-->
-            <!--User profile menu-->
             <button mat-menu-item class="btn-menu-item has-icon" aria-label="User profile">
-                <mat-icon fontIcon="account_circle"></mat-icon>
+                <!-- Case 1: user exists -->
+                <ng-container *ngIf="user$ | async as user">
+                    <img *ngIf="user.picture; else defaultIcon" [src]="user.picture" [alt]="user.name || 'User profile'"
+                        class="profile-icon" />
+                    <ng-template #defaultIcon>
+                        <mat-icon fontIcon="account_circle"></mat-icon>
+                    </ng-template>
+                </ng-container>
+                <!-- Nothing rendered if no user -->
+
+
+                <!-- Case 4: no user at all -->
+                <ng-container *ngIf="!(user$ | async)">
+                    <mat-icon fontIcon="account_circle"></mat-icon>
+                </ng-container>
             </button>
 
             <!--Change language menu-->

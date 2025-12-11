@@ -20,7 +20,10 @@ import { ConfigService } from '@nestjs/config';
 export class GoogleAuthController {
   private readonly logger = new Logger(GoogleAuthController.name);
 
-  constructor( private readonly configService: ConfigService, private readonly googleAuthService: GoogleAuthService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly googleAuthService: GoogleAuthService,
+  ) {}
 
   @ApiOperation({ summary: 'Initiates Google OAuth2 authorization flow' })
   @UseGuards(GoogleOauthGuard)
@@ -38,6 +41,8 @@ export class GoogleAuthController {
   ) {
     const user = req.user;
 
+    this.logger.debug(`Redirect user: ${user.picture}`);
+
     if (!user?.sub) {
       this.logger.warn(`Authentication failed: no user or invalid payload`);
       throw new UnauthorizedException('Google authentication failed');
@@ -52,8 +57,9 @@ export class GoogleAuthController {
       maxAge: 1000 * 60 * 60 * 24,
     });
 
-    this.logger.warn('Set cookies:', res.cookie);
-    return res.redirect(`${this.configService.get<string>('FRONTEND_URL')}/content`);
+    return res.redirect(
+      `${this.configService.get<string>('FRONTEND_URL')}/content`,
+    );
   }
 
   @ApiOperation({ summary: 'Get current logged-in user' })

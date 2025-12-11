@@ -6,5 +6,14 @@ import { IGoogleAuthUser } from "src/app/models/google-auth-user.model";
     providedIn: 'root'
 })
 export class GoogleUserService {
-    public loggedInUser: BehaviorSubject<IGoogleAuthUser> = new BehaviorSubject<any>({});
+  private readonly userSubject = new BehaviorSubject<IGoogleAuthUser | null>(null);
+  user$ = this.userSubject.asObservable();
+
+  public setUser(user: IGoogleAuthUser | null) {
+    this.userSubject.next(user);
+  }
+
+  public get currentUser(): IGoogleAuthUser | null {
+    return this.userSubject.value;
+  }
 }
