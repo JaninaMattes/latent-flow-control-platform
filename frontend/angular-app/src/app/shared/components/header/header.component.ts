@@ -3,7 +3,7 @@ import { ColorThemeService } from '../../services/themes.service';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { LanguageService } from '../../services/language.service';
 import { GoogleAuthService } from 'src/app/auth/services/google-auth.service';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { IGoogleAuthUser } from 'src/app/models/google-auth-user.model';
 
 @Component({
@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     private readonly translate: LanguageService,
     private readonly colorTheme: ColorThemeService,
-    private readonly userAuth: GoogleAuthService
+    private readonly userAuth: GoogleAuthService,
   ) {
     this.user$ = this.userAuth.authUser$;
   }
@@ -38,4 +38,5 @@ export class HeaderComponent implements OnInit {
     const mode = event.checked ? 'dark' : 'light';
     this.colorTheme.setTheme(mode);
   }
+
 }

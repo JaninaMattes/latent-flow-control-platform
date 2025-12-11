@@ -14,23 +14,21 @@
         <!--Additional menu-->
         <div class="nav-part end">
 
-            <button mat-menu-item class="btn-menu-item has-icon" aria-label="User profile">
-                <!-- Case 1: user exists -->
-                <ng-container *ngIf="user$ | async as user">
-                    <img *ngIf="user.picture; else defaultIcon" [src]="user.picture" [alt]="user.name || 'User profile'"
-                        class="profile-icon" />
-                    <ng-template #defaultIcon>
-                        <mat-icon fontIcon="account_circle"></mat-icon>
-                    </ng-template>
-                </ng-container>
-                <!-- Nothing rendered if no user -->
+            <!-- Profile trigger -->
+            <button *ngIf="user$ | async as user" mat-menu-item class="btn-menu-item has-icon"
+                [matMenuTriggerFor]="profileMenu" aria-label="User profile" [disabled]="!user">
 
-
-                <!-- Case 4: no user at all -->
-                <ng-container *ngIf="!(user$ | async)">
-                    <mat-icon fontIcon="account_circle"></mat-icon>
-                </ng-container>
+                <app-profile-picture [user]="user" [size]="32"></app-profile-picture>
             </button>
+
+            <!-- Profile dropdown -->
+            <mat-menu #profileMenu="matMenu" class="profile-menu">
+                <div class="dialog-wrapper">
+                    <app-profile-dialog [user]="user$ | async"></app-profile-dialog>
+                </div>
+            </mat-menu>
+
+
 
             <!--Change language menu-->
             <button mat-menu-item class="btn-menu-item has-icon" [matMenuTriggerFor]="languageSettingsMenu"
@@ -38,8 +36,8 @@
                 <mat-icon fontIcon="language"></mat-icon>
             </button>
             <mat-menu #languageSettingsMenu="matMenu">
-                <button mat-menu-item (click)="changeLang('en')">English</button>
-                <button mat-menu-item (click)="changeLang('de')">Deutsch</button>
+                <button mat-menu-item (click)="changeLang('en')" aria-label="English">English</button>
+                <button mat-menu-item (click)="changeLang('de')" aria-label="Deutsch">Deutsch</button>
             </mat-menu>
 
             <mat-slide-toggle [checked]="isDarkTheme" (change)="toggleTheme($event)" aria-label="Toggle dark theme">
