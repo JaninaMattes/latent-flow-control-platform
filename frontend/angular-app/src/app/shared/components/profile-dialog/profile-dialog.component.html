@@ -1,0 +1,23 @@
+<div class="profile-dialog">
+
+  <!-- Profile header -->
+  <div class="profile-header">
+    <app-profile-picture [user]="data.user" [size]="64"></app-profile-picture>
+
+    <div class="profile-info">
+      <div class="profile-name">{{ data.user?.name }}</div>
+      <div class="profile-location">{{ data.user?.location || data.user?.email }}</div>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <!-- Actions -->
+  <div class="profile-actions">
+    <button mat-stroked-button color="primary" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      Logout
+    </button>
+  </div>
+
+</div>

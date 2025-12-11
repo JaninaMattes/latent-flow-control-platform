@@ -2,11 +2,11 @@ export interface ITheme {
     bgColorPrimary: string,
     bgColorSecondary: string,
     bgColorTertiary: string,
-    btnColorPrimar: string,
+    btnColorPrimary: string,
     bgHoverColor: string
     loadingColorGradient: string,
     textColorPrimary: string,
-    textColorSeconday: string,
+    textColorSecondary: string,
     highlightColorPrimary: string,
     highlightColorSecondary: string,
     successColor: string,

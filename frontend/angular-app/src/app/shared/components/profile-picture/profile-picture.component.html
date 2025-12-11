@@ -1,1 +1,26 @@
-<p>profile-picture works!</p>
+<ng-container *ngIf="user as u; else noUser">
+
+  <!-- Check if user has picture -->
+  <img
+    *ngIf="u.picture; else defaultIcon"
+    [src]="u.picture"
+    [alt]="u.name || 'User profile'"
+    class="profile-icon"
+    [style.width.px]="size"
+    [style.height.px]="size"
+  />
+
+  <!-- Fallback: user exists but no picture -->
+  <ng-template #defaultIcon>
+    <mat-icon
+      fontIcon="account_circle"
+      class="profile-icon"
+      [style.width.px]="size"
+      [style.height.px]="size">
+    </mat-icon>
+  </ng-template>
+
+</ng-container>
+
+<!-- No user information -->
+<ng-template #noUser></ng-template>

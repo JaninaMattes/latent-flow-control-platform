@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ColorThemeService } from '../../services/themes.service';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { LanguageService } from '../../services/language.service';
 import { GoogleAuthService } from 'src/app/auth/services/google-auth.service';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { IGoogleAuthUser } from 'src/app/models/google-auth-user.model';
+import { ProfileDialogComponent } from '../profile-dialog/profile-dialog.component';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +20,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     private readonly translate: LanguageService,
     private readonly colorTheme: ColorThemeService,
-    private readonly userAuth: GoogleAuthService
+    private readonly userAuth: GoogleAuthService,
+    private readonly dialog: MatDialog
   ) {
     this.user$ = this.userAuth.authUser$;
   }
@@ -37,5 +40,9 @@ export class HeaderComponent implements OnInit {
   public toggleTheme(event: MatSlideToggleChange) {
     const mode = event.checked ? 'dark' : 'light';
     this.colorTheme.setTheme(mode);
+  }
+
+  logout() {
+    this.userAuth.logout();
   }
 }
