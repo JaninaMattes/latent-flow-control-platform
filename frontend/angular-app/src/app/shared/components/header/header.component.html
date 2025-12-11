@@ -15,31 +15,20 @@
         <div class="nav-part end">
 
             <!-- Profile trigger -->
-            <button mat-menu-item class="btn-menu-item has-icon" [matMenuTriggerFor]="profileMenu"
-                aria-label="User profile">
-                <app-profile-picture [user]="user$ | async" [size]="32"></app-profile-picture>
+            <button *ngIf="user$ | async as user" mat-menu-item class="btn-menu-item has-icon"
+                [matMenuTriggerFor]="profileMenu" aria-label="User profile" [disabled]="!user">
+
+                <app-profile-picture [user]="user" [size]="32"></app-profile-picture>
             </button>
 
             <!-- Profile dropdown -->
             <mat-menu #profileMenu="matMenu" class="profile-menu">
-                <div class="profile-dialog">
-                    <!-- Profile header -->
-                    <div class="profile-header">
-                        <app-profile-picture [user]="user$ | async" [size]="64"></app-profile-picture>
-                        <div class="profile-info">
-                            <div class="profile-name">{{ (user$ | async)?.name }}</div>
-                            <div class="profile-location">{{ (user$ | async)?.location || (user$ | async)?.email }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Profile dropdown logout button -->
-                    <button mat-flat-button color="primary" (click)="logout()">
-                    Logout
-                    </button>
-
+                <div class="dialog-wrapper">
+                    <app-profile-dialog [user]="user$ | async"></app-profile-dialog>
                 </div>
             </mat-menu>
+
+
 
             <!--Change language menu-->
             <button mat-menu-item class="btn-menu-item has-icon" [matMenuTriggerFor]="languageSettingsMenu"

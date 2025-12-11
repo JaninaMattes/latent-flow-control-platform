@@ -1,32 +1,38 @@
 .profile-dialog
+  width: 200px
   padding: 24px
-  width: 320px
   display: flex
   flex-direction: column
-  gap: 20px
-
-.profile-header
-  display: flex
   align-items: center
+  text-align: center
   gap: 16px
 
-.profile-info
+.profile-image
+  margin-bottom: 8px
+
+.profile-field
   display: flex
-  flex-direction: column
-  line-height: 1.2
+  align-items: center
+  justify-content: center
+  gap: 8px
+  font-size: 16px
+  color: var(--btnColorPrimary)
+  width: 100%
 
-.profile-name
-  font-size: 18px
-  font-weight: 600
-  color: var(--highlightColorPrimary)
+  mat-icon
+    font-size: 20px
+    width: 20px
+    height: 20px
+    color: var(--btnColorPrimary)
 
-.profile-location
-  font-size: 14px
-  opacity: 0.7
-
-.profile-actions
-  display: flex
-  justify-content: flex-end
-
-button mat-icon
-  margin-right: 8px
+.logout-btn
+  max-width: 255px
+  width: 100%
+  margin-top: 16px
+  border-radius: 4px
+  min-width: 120px
+  height: 40px
+  font-weight: 500
+  color: var(--btnTextPrimary)
+  background-color: var(--btnColorPrimary)
+  border: none

@@ -3,6 +3,7 @@ export interface ITheme {
     bgColorSecondary: string,
     bgColorTertiary: string,
     btnColorPrimary: string,
+    btnTextPrimary: string,
     bgHoverColor: string
     loadingColorGradient: string,
     textColorPrimary: string,

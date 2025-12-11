@@ -1,6 +1,7 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { GoogleAuthService } from 'src/app/auth/services/google-auth.service';
+// profile-dialog.component.ts
+import { Component, Input } from "@angular/core";
+import { GoogleAuthService } from "src/app/auth/services/google-auth.service";
+import { IGoogleAuthUser } from "src/app/models/google-auth-user.model";
 
 @Component({
   selector: 'app-profile-dialog',
@@ -8,15 +9,12 @@ import { GoogleAuthService } from 'src/app/auth/services/google-auth.service';
   styleUrls: ['./profile-dialog.component.sass']
 })
 export class ProfileDialogComponent {
+  
+  @Input() user: IGoogleAuthUser | null = null;
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private readonly dialogRef: MatDialogRef<ProfileDialogComponent>,
-    private readonly auth: GoogleAuthService
-  ) {}
+  constructor(private readonly userAuth: GoogleAuthService) {}
 
   logout() {
-    this.auth.logout();
-    this.dialogRef.close();
+    this.userAuth.logout();
   }
 }
