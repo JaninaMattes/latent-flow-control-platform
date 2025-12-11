@@ -43,7 +43,6 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
     };
 
     // TODO: encrypt tokens before saving in DB
-    this.logger.debug(`User successfully authenticated via Google API: ${userForDB.name}`);
 
     const userForFrontend: IUserPayload = {
       sub: userForDB.sub,
@@ -52,6 +51,8 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
       picture: userForDB.picture,
       locale: userForDB.locale,
     };
+
+    this.logger.debug(`User extracted ${userForFrontend.picture}`)
 
     done(null, userForFrontend);
   }

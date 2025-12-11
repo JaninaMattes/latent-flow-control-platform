@@ -10,7 +10,6 @@ export class JWTAuthGuard extends AuthGuard('jwt') {
 
     try {
         const result = super.handleRequest<Claims>(err, user, info, context, status);
-        this.logger.debug(`User authenticated via JWT cookie.`);
         return result as unknown as TUser;
     } catch (error) {
         this.logger.warn(`User unauthenticated. Error: ${error?.message}`);
