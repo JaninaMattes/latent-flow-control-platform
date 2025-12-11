@@ -20,6 +20,7 @@ export class UserActivityService {
     globalThis.addEventListener('keydown', () => this.resetTimer());
     globalThis.addEventListener('scroll', () => this.resetTimer());
   }
+
   /* Memory based inactivity service */
   private resetTimer() {
     clearTimeout(this.timer);
