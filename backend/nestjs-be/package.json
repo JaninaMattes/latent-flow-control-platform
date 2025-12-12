@@ -28,7 +28,7 @@
     "@nestjs/jwt": "^8.0.1",
     "@nestjs/passport": "^8.2.2",
     "@nestjs/platform-express": "^11.1.9",
-    "@nestjs/platform-fastify": "^8.4.1",
+    "@nestjs/platform-fastify": "^11.1.9",
     "@nestjs/schematics": "^8.0.8",
     "@nestjs/swagger": "^5.2.1",
     "class-transformer": "^0.5.1",
