@@ -1,4 +1,15 @@
+<!-- galleria.component.html -->
 <div class="galleria-container">
     <h1>Galleria works!</h1>
     <p>{{ 'test' | translate }}</p>
+
+    <div class="grid">
+        <div class="card" *ngFor="let img of images">
+            <img [src]="img.url" [alt]="img.title || 'Graphic'" />
+            <div class="card-content">
+                <h3>{{ img.title }}</h3>
+                <p>{{ img.description }}</p>
+            </div>
+        </div>
+    </div>
 </div>

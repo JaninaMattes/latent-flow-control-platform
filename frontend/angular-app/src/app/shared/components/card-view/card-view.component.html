@@ -1,0 +1,16 @@
+<mat-card class="gallery-card" appearance="outlined">
+  <div class="image-wrapper">
+    <img [src]="picture" alt="Generated sample" />
+
+    <button mat-icon-button class="like-btn" (click)="toggleLike($event)">
+      <mat-icon>{{ liked ? 'favorite' : 'favorite_border' }}</mat-icon>
+    </button>
+  </div>
+
+  <div class="info-overlay">
+    <div class="meta">
+      <span class="date">{{ createdAt | date:'mediumDate' }}</span>
+      <span class="likes">{{ likes }} likes</span>
+    </div>
+  </div>
+</mat-card>

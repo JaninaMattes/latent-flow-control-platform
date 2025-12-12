@@ -26,12 +26,6 @@ const routes: Routes = [
       import('./content/content.component').then(m => m.ContentComponent)
   },
   {
-    path: 'user/:id',
-    canActivate: [AuthGuard],
-    loadComponent: () =>
-      import('./shared/components/user/user.component').then(m => m.UserComponent)
-  },
-  {
     path: '**',
     loadComponent: () =>
       import('./shared/components/not-found/not-found.component').then(m => m.NotFoundComponent)
