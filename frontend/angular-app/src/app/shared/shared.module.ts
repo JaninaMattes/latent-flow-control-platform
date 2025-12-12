@@ -12,25 +12,26 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
+import {MatCardModule} from '@angular/material/card';
 
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
-import { UserComponent } from './components/user/user.component';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfilePictureComponent } from './components/profile-picture/profile-picture.component';
 import { ProfileDialogComponent } from './components/profile-dialog/profile-dialog.component';
+import { CardViewComponent } from './components/card-view/card-view.component';
 
 const components = [
   HeaderComponent,
   FooterComponent,
   SnackbarComponent,
-  UserComponent,
   ProfilePictureComponent,
   ProfileDialogComponent,
+  CardViewComponent
 ];
 
 const modules = [
@@ -49,6 +50,7 @@ const modules = [
   MatTabsModule,
   MatTooltipModule,
   MatExpansionModule,
+  MatCardModule,
   TranslateModule,
   RouterModule,
 ];
