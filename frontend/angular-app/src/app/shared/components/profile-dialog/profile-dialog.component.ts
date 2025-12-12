@@ -14,7 +14,7 @@ export class ProfileDialogComponent {
 
   constructor(private readonly userAuth: GoogleAuthService) {}
 
-  logout() {
+  public logout() {
     this.userAuth.logout();
   }
 }

@@ -32,10 +32,7 @@ export class GoogleAuthService {
       .get(`${environment.apiUrl}/google-auth/logout`, { withCredentials: true })
       .subscribe(() => {
 
-        this.localStorage.setItem('authState', {
-          lastChecked: Date.now()
-        });
-
+        this.localStorage.removeItem('authState');
         this.authUserSubject.next(null);
         this.router.navigate(['/home']);
       });

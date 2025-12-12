@@ -1,6 +1,26 @@
 .home-container
   width: 100%
-  height: 100%
+  height: 100vh   // full viewport height
   background-color: var(--bgColorSecondary)
   color: var(--textColorPrimary)
-  padding-top: 1rem // prevents margin collapse
+
+  display: flex
+  flex-direction: column
+  justify-content: center    
+  align-items: center       
+  text-align: center        
+
+  .btn-icon
+    margin-right: 1em
+
+  .btn-login
+    max-width: 255px
+    width: 100%
+    margin-top: 16px
+    border-radius: 4px
+    min-width: 120px
+    height: 40px
+    font-weight: 500
+    color: var(--btnTextPrimary)
+    background-color: var(--btnColorPrimary)
+    border: none
