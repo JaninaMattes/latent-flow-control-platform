@@ -14,16 +14,16 @@ const routes: Routes = [
       import('./home/home.component').then(m => m.HomeComponent)
   },
   {
-    path: 'content',
-    canActivate: [AuthGuard],
-    loadComponent: () =>
-      import('./content/content.component').then(m => m.ContentComponent)
-  },
-  {
     path: 'galleria',
     canActivate: [AuthGuard],
     loadComponent: () =>
       import('./galleria/galleria.component').then(m => m.GalleriaComponent)
+  },
+  {
+    path: 'content',
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import('./content/content.component').then(m => m.ContentComponent)
   },
   {
     path: 'user/:id',
