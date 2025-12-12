@@ -8,7 +8,6 @@ import { GoogleModule } from 'src/libs/google/google.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { GoogleOauthStrategy } from './strategies/google-oauth.strategy';
 
-
 const imports = [
   PassportModule.register({ defaultStrategy: 'jwt' }),
   JwtModule.registerAsync({
