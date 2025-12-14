@@ -46,7 +46,7 @@ export class HeaderComponent implements OnInit {
     if (user) {
       this.router.navigate(['/content']);  // logged in
     } else {
-      this.router.navigate(['/home']);      // not logged in
+      this.router.navigate(['/home']);      // logged out
     }
   });
 }
