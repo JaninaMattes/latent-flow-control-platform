@@ -6,7 +6,5 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./content.component.sass']
 })
 export class ContentComponent implements OnInit {
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }

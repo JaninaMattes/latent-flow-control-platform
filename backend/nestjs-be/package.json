@@ -45,6 +45,7 @@
     "reflect-metadata": "^0.1.14",
     "rimraf": "^6.1.2",
     "rxjs": "^7.2.0",
+    "swagger": "^0.7.5",
     "swagger-ui-express": "^5.0.1",
     "terser": "^5.14.2",
     "typeorm": "^0.3.28",
