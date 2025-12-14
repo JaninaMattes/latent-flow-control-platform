@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "music-player-fe": {
+    "angular-app-fe": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/music-player-fe",
+            "outputPath": "dist/angular-app-fe",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -94,14 +94,14 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "music-player-fe:build:production"
+              "browserTarget": "angular-app-fe:build:production"
             },
             "development": {
-              "browserTarget": "music-player-fe:build:development",
+              "browserTarget": "angular-app-fe:build:development",
               "proxyConfig": "src/proxy.conf.json"
             },
             "local": {
-              "browserTarget": "music-player-fe:build:local",
+              "browserTarget": "angular-app-fe:build:local",
               "proxyConfig": "src/proxy.conf.json"
             }
           },
@@ -110,7 +110,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "music-player-fe:build"
+            "browserTarget": "angular-app-fe:build"
           }
         },
         "test": {
