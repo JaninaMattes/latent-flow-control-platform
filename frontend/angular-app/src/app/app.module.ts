@@ -10,7 +10,6 @@ import { MatSliderModule } from '@angular/material/slider';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
-import { CardsComponent } from './cards/cards.component';
 import { HomeComponent } from './home/home.component';
 import { ContentComponent } from './content/content.component';
 import { CarouselComponent } from './carousel/carousel.component';
@@ -54,7 +53,6 @@ const modules = [
     HomeComponent,
     ContentComponent,
     GalleriaComponent,
-    CardsComponent,
     CarouselComponent,
     ImageCompareComponent,
     SliderThumbComponent,

@@ -1,12 +1,13 @@
 .gallery-card
   width: 300px
-  height: 320px
+  height: 300px
   border-radius: 24px
   overflow: hidden
   padding: 0
   position: relative
-  box-shadow: 0 6px 16px rgba(0,0,0,0.15)
   cursor: pointer
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15)
+
 
 .image-wrapper
   position: relative
@@ -19,40 +20,54 @@
     object-fit: cover
     display: block
 
+
 .like-btn
   position: absolute
-  top: 16px
-  right: 16px
-  background-color: rgba(255,255,255,0.15)
-  backdrop-filter: blur(6px)
-  border: 1px solid rgba(255,255,255,0.4)
-  border-radius: 50%
+  top: 12px
+  right: 12px
+
+  background: none
+  border: none
+  padding: 0
+  width: auto
+  height: auto
+
   color: white
 
   mat-icon
-    color: white
+    font-size: 24px
+    line-height: 1
+    color: inherit
+
+  &:hover
+    color: rgba(255, 255, 255, 0.8)
+
+
 
 .info-overlay
   position: absolute
   bottom: 0
   width: 100%
-  padding: 16px
-  background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0))
-  color: #fff
+  padding: 14px 16px
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.15))
+  backdrop-filter: blur(8px)
+  color: white
   display: flex
   align-items: flex-end
 
-.meta
-  width: 100%
-  display: flex
-  justify-content: space-between
-  font-size: 14px
-  font-weight: 500
-
-  .date
-    opacity: 0.9
-
-  .likes
+  .meta
+    width: 100%
     display: flex
-    gap: 4px
-    opacity: 0.9
+    justify-content: space-between
+    align-items: center
+    font-size: 13px
+    font-weight: 500
+
+    .date
+      opacity: 0.85
+
+    .likes
+      display: flex
+      align-items: center
+      gap: 4px
+      opacity: 0.9
