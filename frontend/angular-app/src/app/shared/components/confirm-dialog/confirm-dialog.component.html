@@ -1,1 +1,41 @@
-<p>confirm-dialog works!</p>
+<div class="dialog-wrapper">
+  <h2>Select Images</h2>
+
+  <!-- Categories -->
+  <div class="category-button">
+    <button
+      *ngFor="let category of categories"
+      class="content-btn"
+      [class.active]="category.id === selectedCategory?.id"
+      (click)="selectCategory(category)"
+    >
+      {{ category.category }}
+    </button>
+  </div>
+
+  <!-- Images -->
+  <div class="image-grid">
+    <div
+      class="image-card"
+      *ngFor="let img of images"
+      [class.selected]="isSelected(img)"
+      (click)="selectImage(img)"
+    >
+      <img [src]="img.picture" [alt]="'Selectable pictures.'" />
+      <span class="checkmark" *ngIf="isSelected(img)">✓</span>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="dialog-actions">
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="selectedImages.length !== 2"
+      (click)="confirm()"
+    >
+      Confirm ({{ selectedImages.length }}/2)
+    </button>
+  </div>
+</div>

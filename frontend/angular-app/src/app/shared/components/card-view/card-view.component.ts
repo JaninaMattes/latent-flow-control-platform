@@ -10,12 +10,12 @@ export class CardViewComponent {
   @Input() createdAt!: string;
   @Input() likes!: number;
 
-  liked = false;
+  isLiked = false;
 
   toggleLike(event: Event) {
     event.stopPropagation(); // prevent parent clicks
 
-    this.liked = !this.liked;
-    this.likes += this.liked ? 1 : -1;
+    this.isLiked = !this.isLiked;
+    this.likes += this.isLiked ? 1 : -1;
   }
 }

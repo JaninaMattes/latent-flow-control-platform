@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ProfilePictureComponent } from '../profile-picture.component';
 
-import { ImageCompareComponent } from './image-compare.component';
 
-describe('ImageCompareComponent', () => {
-  let component: ImageCompareComponent;
-  let fixture: ComponentFixture<ImageCompareComponent>;
+describe('ProfilePictureComponent', () => {
+  let component: ProfilePictureComponent;
+  let fixture: ComponentFixture<ProfilePictureComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ImageCompareComponent ]
+      declarations: [ ProfilePictureComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ImageCompareComponent);
+    fixture = TestBed.createComponent(ProfilePictureComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

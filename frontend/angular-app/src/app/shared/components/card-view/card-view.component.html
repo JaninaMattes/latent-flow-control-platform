@@ -2,8 +2,13 @@
   <div class="image-wrapper">
     <img [src]="picture" alt="Generated sample" />
 
-    <button mat-icon-button class="like-btn" (click)="toggleLike($event)">
-      <mat-icon>{{ liked ? 'favorite' : 'favorite_border' }}</mat-icon>
+    <button
+      mat-icon-button
+      class="like-btn"
+      (click)="toggleLike($event)">
+      <mat-icon>
+        {{ isLiked ? 'favorite' : 'favorite_border' }}
+      </mat-icon>
     </button>
   </div>
 
