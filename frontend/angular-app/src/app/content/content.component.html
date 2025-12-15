@@ -3,4 +3,15 @@
         <h1>Content</h1>
         <p>{{ 'test' | translate }}</p>
     </div>
+
+    <!-- Slider for interpolation -->
+    <div class="content-body">
+        <app-slider-thumb [min]="0" [max]="100" [step]="1" [showValue]="true" [(value)]="interpolationValue"
+            [label]="'Interpolation Position'" [unit]="'%'" (valueChange)="onInterpolationChange($event)">
+        </app-slider-thumb>
+    </div>
+
+    <!-- Open pop-up window to select images -->
+    <button matButton (click)="openDialog()">Select Images</button>
 </div>
+

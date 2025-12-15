@@ -13,6 +13,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
 import {MatCardModule} from '@angular/material/card';
+import {MatSliderModule} from '@angular/material/slider';
 
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -24,6 +25,7 @@ import { CommonModule } from '@angular/common';
 import { ProfilePictureComponent } from './components/profile-picture/profile-picture.component';
 import { ProfileDialogComponent } from './components/profile-dialog/profile-dialog.component';
 import { CardViewComponent } from './components/card-view/card-view.component';
+import { SliderThumbComponent } from './components/slider-thumb/slider-thumb.component';
 
 const components = [
   HeaderComponent,
@@ -31,13 +33,15 @@ const components = [
   SnackbarComponent,
   ProfilePictureComponent,
   ProfileDialogComponent,
-  CardViewComponent
+  CardViewComponent,
+  SliderThumbComponent
 ];
 
 const modules = [
   CommonModule,
   MatDialogModule,
   MatDividerModule,
+  MatSliderModule,
   MatIconModule,
   MatMenuModule,
   FormsModule,

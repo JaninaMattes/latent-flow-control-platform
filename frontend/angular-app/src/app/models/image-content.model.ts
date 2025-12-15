@@ -5,3 +5,16 @@ export interface IGalleriaImageContent {
   createdAt: Date;
   likedBy: number;
 }
+
+
+export interface IGalleriaImageCategory {
+  id: string;
+  category: string;
+}
+
+
+export interface ImageContent {
+  id: string;
+  picture: string; // URL to S3 or CDN
+  category: string;
+}

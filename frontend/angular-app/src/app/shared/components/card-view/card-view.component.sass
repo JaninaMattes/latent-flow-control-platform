@@ -47,13 +47,15 @@
 .info-overlay
   position: absolute
   bottom: 0
-  width: 100%
+  left: 0
+  right: 0
   padding: 14px 16px
   background: linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.15))
   backdrop-filter: blur(8px)
   color: white
   display: flex
   align-items: flex-end
+  box-sizing: border-box
 
   .meta
     width: 100%
@@ -65,9 +67,13 @@
 
     .date
       opacity: 0.85
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
 
     .likes
       display: flex
       align-items: center
       gap: 4px
       opacity: 0.9
+      flex-shrink: 0

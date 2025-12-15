@@ -1,0 +1,30 @@
+.slider-container
+  width: 100%
+
+  label
+    display: block
+    margin-bottom: 0.5rem
+    font-weight: 500
+    font-size: 0.9rem
+    color: var(--textColorPrimary)
+
+  mat-slider
+    width: 100%
+
+    ::ng-deep .mat-slider-thumb
+      background-color: var(--textColorPrimary) !important
+      border-color: var(--textColorPrimary) !important
+
+    /* Inactive track */
+    ::ng-deep .mat-slider-track-background
+      background-color: var(--textColorPrimary) !important
+      opacity: 1 !important
+
+    ::ng-deep .mat-slider-track-wrapper
+      background: none !important
+
+  .slider-value
+    text-align: center
+    margin-top: 0.5rem
+    font-size: 0.85rem
+    opacity: 0.8

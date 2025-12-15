@@ -9,7 +9,7 @@ import { IGalleriaImageContent } from '../models/image-content.model';
   styleUrls: ['./galleria.component.sass'],
 }) export class GalleriaComponent implements OnInit {
   images: IGalleriaImageContent[] = [];
-  cols = 2;
+  cols: number = 2;
 
   constructor(
     private readonly galleriaService: GalleriaService,

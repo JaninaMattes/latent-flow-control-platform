@@ -12,10 +12,7 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { HomeComponent } from './home/home.component';
 import { ContentComponent } from './content/content.component';
-import { CarouselComponent } from './carousel/carousel.component';
 import { GalleriaComponent } from './galleria/galleria.component';
-import { ImageCompareComponent } from './image-compare/image-compare.component';
-import { SliderThumbComponent } from './slider-thumb/slider-thumb.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -52,10 +49,7 @@ const modules = [
     AppComponent,
     HomeComponent,
     ContentComponent,
-    GalleriaComponent,
-    CarouselComponent,
-    ImageCompareComponent,
-    SliderThumbComponent,
+    GalleriaComponent
   ],
   imports: modules,
   providers: [],
