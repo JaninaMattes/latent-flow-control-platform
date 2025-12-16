@@ -27,4 +27,12 @@ export class ContentService {
       { withCredentials: true }
     );
   }
+
+  public getImagesById(selectedIds: string[]): Observable<ImageContent[]> {
+    const params = { ids: selectedIds.join(',') };
+    return this.http.get<ImageContent[]>(
+      `${environment.apiUrl}/gallery/images`,
+      { params, withCredentials: true }
+    );
+  }
 }

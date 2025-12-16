@@ -9,6 +9,7 @@ export class ImageCardViewComponent {
   @Input() id!: string;
   @Input() picture!: string;
   @Input() isSelected = false;
+  @Input() showBookmark = true;
 
   @Output() selectionChange = new EventEmitter<{
     id: string;
