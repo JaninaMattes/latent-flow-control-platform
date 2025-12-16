@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import {
-  ImageCategoryDto,
+  CategoryDto,
   ImageContentDto,
-  CategoryImageDto,
+  ImageDto,
 } from './dto/image-content.dto';
 
 @Injectable()
@@ -65,10 +65,10 @@ export class GalleryService {
     },
   ];
 
-  private readonly mockCategories: ImageCategoryDto[] = [
+  private readonly mockCategories: CategoryDto[] = [
     {
       id: '1',
-     category: 'Tiger',
+      category: 'Tiger',
     },
     {
       id: '2',
@@ -92,7 +92,7 @@ export class GalleryService {
     },
   ];
 
-  private readonly mockRealImagesByCategory: CategoryImageDto[] = [
+  private readonly mockRealImagesByCategory: ImageDto[] = [
     {
       id: '0',
       picture:
@@ -141,31 +141,31 @@ export class GalleryService {
         'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
       categoryId: '2',
     },
-        {
+    {
       id: '8',
       picture:
         'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
       categoryId: '3',
     },
-            {
+    {
       id: '9',
       picture:
         'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
       categoryId: '3',
     },
-        {
+    {
       id: '10',
       picture:
         'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
       categoryId: '4',
     },
-        {
+    {
       id: '11',
       picture:
         'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
       categoryId: '5',
     },
-        {
+    {
       id: '12',
       picture:
         'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
@@ -196,7 +196,7 @@ export class GalleryService {
   /**
    * Get all image categories available.
    */
-  async getImageCategories(): Promise<ImageCategoryDto[]> {
+  async getImageCategories(): Promise<CategoryDto[]> {
     return [...this.mockCategories].sort(function (a, b) {
       let nameA = a.category.toLowerCase(),
         nameB = b.category.toLowerCase();
@@ -213,10 +213,23 @@ export class GalleryService {
    * @param category
    * @returns
    */
-  async getImagesByCategory(
-    categoryId: string,
-  ): Promise<CategoryImageDto[]> {
-    let filteredImgs: CategoryImageDto[] = this.mockRealImagesByCategory.filter((image) => image.categoryId === categoryId);
-    return filteredImgs
+  async getImagesByCategory(categoryId: string): Promise<ImageDto[]> {
+    let filteredImgs: ImageDto[] = this.mockRealImagesByCategory.filter(
+      (image) => image.categoryId === categoryId,
+    );
+    return filteredImgs;
+  }
+
+  async getImagesByIds(selectedImgIds: string[]): Promise<ImageDto[]> {
+    if (!selectedImgIds || selectedImgIds.length === 0) {
+      this.logger.warn(`Received no selected image ids.`);
+      return [];
+    }
+
+    const filteredImgs: ImageDto[] = this.mockRealImagesByCategory.filter(
+      (image) => selectedImgIds.includes(image.id),
+    );
+
+    return filteredImgs;
   }
 }
