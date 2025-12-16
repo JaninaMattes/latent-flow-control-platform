@@ -32,7 +32,7 @@ export class ConfirmDialogComponent implements OnInit {
    */
   public confirm(): void {
     this.dialogRef.close({
-      images: this.selectedImages,
+      selectedImages: this.selectedImages,
     });
   }
 

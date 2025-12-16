@@ -23,7 +23,7 @@ export class ImageContentDto {
   likedBy?: number;
 }
 
-export class ImageCategoryDto {
+export class CategoryDto {
   @ApiProperty({ description: 'Unique identifier for an image category' })
   @IsNotEmpty()
   @IsString()
@@ -36,7 +36,7 @@ export class ImageCategoryDto {
 }
 
 
-export class CategoryImageDto {
+export class ImageDto {
   @ApiProperty({ description: 'Unique image identifier' })
   @IsString()
   @IsNotEmpty()

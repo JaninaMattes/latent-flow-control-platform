@@ -4,14 +4,42 @@
         <p>{{ 'test' | translate }}</p>
     </div>
 
-    <!-- Slider for interpolation -->
-    <div class="content-body">
-        <app-slider-thumb [min]="0" [max]="100" [step]="1" [showValue]="true" [(value)]="interpolationValue"
-            [label]="'Interpolation Position'" [unit]="'%'" (valueChange)="onInterpolationChange($event)">
-        </app-slider-thumb>
+    <div *ngIf="selectedImages.length === 2" class="content-viewport">
+
+        <!-- Images row -->
+        <div class="image-row">
+
+            <!-- Left image -->
+            <app-image-card-view class="side-image" [picture]="selectedImages[0].picture" [showBookmark]="false">
+            </app-image-card-view>
+
+            <!-- Center interpolation -->
+            <div class="interpolation-result">
+                <img *ngIf="resultImgUrl" [src]="resultImgUrl" class="result-image" alt="Interpolated result" />
+
+                <!-- Play overlay -->
+                <button *ngIf="!isPlayingGif" class="play-overlay" (click)="playGif()">
+                    <mat-icon>play_circle</mat-icon>
+                </button>
+
+                <img *ngIf="isPlayingGif && resultGifUrl" [src]="resultGifUrl" class="result-gif"
+                    alt="Interpolation animation" />
+            </div>
+
+            <!-- Right image -->
+            <app-image-card-view class="side-image" [picture]="selectedImages[1].picture" [showBookmark]="false">
+            </app-image-card-view>
+
+        </div>
+
+        <!-- Slider -->
+        <div class="slider-row">
+            <app-slider-thumb [min]="0" [max]="100" [step]="1" [showValue]="true" [(value)]="interpolationValue"
+                (valueChange)="onInterpolationChange($event)">
+            </app-slider-thumb>
+        </div>
+
     </div>
 
-    <!-- Open pop-up window to select images -->
     <button matButton (click)="openDialog()">Select Images</button>
 </div>
-

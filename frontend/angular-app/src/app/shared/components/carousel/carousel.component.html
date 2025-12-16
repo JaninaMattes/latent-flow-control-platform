@@ -9,6 +9,7 @@
         *ngFor="let img of images"
         [id]="img.id"
         [picture]="img.picture"
+        [showBookmark]="true"
         [isSelected]="selectedImages.includes(img.id)"
         (selectionChange)="onSelectionChange($event)">
       </app-image-card-view>
