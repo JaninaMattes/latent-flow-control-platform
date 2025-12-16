@@ -1,0 +1,21 @@
+<div class="carousel">
+  <button class="nav left" (click)="prevSlide()" aria-label="Previous slide">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <div class="viewport" #viewport>
+    <div class="track" #track [style.transform]="transform" [style.transition]="'transform 0.3s ease'">
+      <app-image-card-view
+        *ngFor="let img of images"
+        [id]="img.id"
+        [picture]="img.picture"
+        [isSelected]="selectedImages.includes(img.id)"
+        (selectionChange)="onSelectionChange($event)">
+      </app-image-card-view>
+    </div>
+  </div>
+
+  <button class="nav right" (click)="nextSlide()" aria-label="Next slide">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</div>

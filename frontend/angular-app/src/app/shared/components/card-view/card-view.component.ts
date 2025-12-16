@@ -1,21 +1,31 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 
 @Component({
   selector: 'app-card-view',
   templateUrl: './card-view.component.html',
-  styleUrls: ['./card-view.component.sass']
+  styleUrls: ['./card-view.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardViewComponent {
+  @Input() id!: string;
   @Input() picture!: string;
-  @Input() createdAt!: string;
+  @Input() createdAt!: Date;
   @Input() likes!: number;
+  @Input() isLiked = false;
 
-  isLiked = false;
+  @Output() likedToggled = new EventEmitter<{ id: string; liked: boolean }>();
 
-  toggleLike(event: Event) {
-    event.stopPropagation(); // prevent parent clicks
-
-    this.isLiked = !this.isLiked;
-    this.likes += this.isLiked ? 1 : -1;
+  public toggleLike(event: Event): void {
+    event.stopPropagation();
+    this.likedToggled.emit({
+      id: this.id,
+      liked: !this.isLiked,
+    });
   }
 }

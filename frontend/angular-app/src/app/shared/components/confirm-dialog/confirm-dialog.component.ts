@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import {
   IGalleriaImageCategory,
   ImageContent,
@@ -15,40 +15,24 @@ export class ConfirmDialogComponent implements OnInit {
   categories: IGalleriaImageCategory[] = [];
   selectedCategory: IGalleriaImageCategory | null = null;
 
-  images: ImageContent[] = [];
-  selectedImages: ImageContent[] = [];
+  allImages: ImageContent[] = [];
+  selectedImages: string[] = []; // keeps track of images based on their ID
 
   constructor(
     private readonly contentService: ContentService,
-    private readonly dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { interpolation: number }
+    private readonly dialogRef: MatDialogRef<ConfirmDialogComponent>
   ) {}
 
   ngOnInit(): void {
     this.fetchCategories();
   }
 
-  public selectImage(img: ImageContent): void {
-    const index = this.selectedImages.findIndex((i) => i.id === img.id);
-
-    if (index > -1) {
-      this.selectedImages.splice(index, 1);
-      return;
-    }
-
-    if (this.selectedImages.length < 2) {
-      this.selectedImages.push(img);
-    }
-  }
-
-  public isSelected(img: ImageContent): boolean {
-    return this.selectedImages.some((i) => i.id === img.id);
-  }
-
+  /**
+   * Methods for button interaction with user.
+   */
   public confirm(): void {
     this.dialogRef.close({
       images: this.selectedImages,
-      interpolation: this.data.interpolation,
     });
   }
 
@@ -56,13 +40,25 @@ export class ConfirmDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  public onSelectionChange(event: { id: string; selected: boolean }): void {
+    if (event.selected) {
+      if (this.selectedImages.length < 2) {
+        this.selectedImages.push(event.id);
+      }
+    } else {
+      this.selectedImages = this.selectedImages.filter((id) => id !== event.id);
+    }
+  }
+
+  /**
+   * Set specific category.
+   * @param category
+   * @returns
+   */
   public selectCategory(category: IGalleriaImageCategory): void {
     if (this.selectedCategory?.id === category.id) return;
-
     this.selectedCategory = category;
-    this.selectedImages = [];
-    console.log(`Selected category ${this.selectedCategory.category}`);
-
+    this.allImages = [];
     this.fetchImagesByCategory(this.selectedCategory.id);
   }
 
@@ -79,7 +75,7 @@ export class ConfirmDialogComponent implements OnInit {
   private fetchImagesByCategory(categoryId: string): void {
     this.contentService.getAllImagesByCategory(categoryId).subscribe({
       next: (data) => {
-        this.images = data;
+        this.allImages = data;
       },
       error: (err) => console.error('Failed to fetch images', err),
     });

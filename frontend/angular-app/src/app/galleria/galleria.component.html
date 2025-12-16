@@ -5,11 +5,9 @@
   </div>
 
   <div class="galleria-grid">
-    <app-card-view
-      *ngFor="let img of images"
-      [picture]="img.picture"
-      [createdAt]="img.createdAt"
-      [likes]="img.likedBy">
+    <app-card-view *ngFor="let img of images" [picture]="img.picture" [createdAt]="img.createdAt" [likes]="img.likedBy"
+      (likedChanged)="handleLike($event)">
     </app-card-view>
+
   </div>
 </div>

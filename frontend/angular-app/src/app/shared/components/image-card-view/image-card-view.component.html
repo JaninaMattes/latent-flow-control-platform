@@ -1,0 +1,12 @@
+<mat-card class="image-card" appearance="outlined" [class.selected]="isSelected">
+    <div class="image-wrapper">
+        <img [src]="picture" alt="Selectable sample" />
+
+        <button mat-icon-button class="bookmark-btn" (click)="toggleSelection($event)"
+            aria-label="Toggle image selection">
+            <mat-icon>
+                {{ isSelected ? 'bookmark' : 'bookmark_border' }}
+            </mat-icon>
+        </button>
+    </div>
+</mat-card>
