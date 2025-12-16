@@ -1,0 +1,61 @@
+.image-card
+  width: 150px
+  height: 150px
+  border-radius: 24px
+  overflow: hidden
+  padding: 0
+  position: relative
+  cursor: pointer
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15)
+  transition: box-shadow 0.2s ease, transform 0.2s ease
+
+  &.selected
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35)
+    transform: translateY(-4px)
+    outline: 2px solid var(--highlightColorSecondary)
+
+.image-card.selected img
+  filter: brightness(1.05) saturate(1.1)
+
+.image-card.selected::after
+  content: ''
+  position: absolute
+  inset: 0
+  border-radius: 24px
+  box-shadow: inset 0 0 0 2px var(--highlightColorSecondary)
+  pointer-events: none
+
+.image-card.selected .bookmark-btn
+  color: var(--highlightColorSecondary)
+
+.image-wrapper
+  position: relative
+  width: 100%
+  height: 100%
+
+  img
+    width: 100%
+    height: 100%
+    object-fit: cover
+    display: block
+
+.bookmark-btn
+  position: absolute
+  top: 12px
+  right: 12px
+
+  background: none
+  border: none
+  padding: 0
+  width: auto
+  height: auto
+
+  color: white
+
+  mat-icon
+    font-size: 24px
+    line-height: 1
+    color: inherit
+
+  &:hover
+    color: rgba(255, 255, 255, 0.8)

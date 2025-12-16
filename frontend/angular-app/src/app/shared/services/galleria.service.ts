@@ -10,12 +10,18 @@ import { IGalleriaImageContent } from 'src/app/models/image-content.model';
   providedIn: 'root',
 })
 export class GalleriaService {
+
   constructor(private readonly http: HttpClient) {}
 
-  getGeneratedImages(limit = 10, offset = 0): Observable<IGalleriaImageContent[]> {
+  public getGeneratedImages(limit = 10, offset = 0): Observable<IGalleriaImageContent[]> {
     return this.http.get<IGalleriaImageContent[]>(
       `${environment.apiUrl}/gallery/gen-content?limit=${limit}&offset=${offset}`,
       { withCredentials: true }
     );
+  }
+
+  // TODO: Connect to backend
+  public updateImage(img: IGalleriaImageContent) {
+    throw new Error('Method not implemented.');
   }
 }

@@ -7,7 +7,8 @@ import { IGalleriaImageContent } from '../models/image-content.model';
   selector: 'app-galleria',
   templateUrl: './galleria.component.html',
   styleUrls: ['./galleria.component.sass'],
-}) export class GalleriaComponent implements OnInit {
+})
+export class GalleriaComponent implements OnInit {
   images: IGalleriaImageContent[] = [];
   cols: number = 2;
 
@@ -21,24 +22,38 @@ import { IGalleriaImageContent } from '../models/image-content.model';
     this.fetchImages();
   }
 
+  public handleLike(event: { id: string; liked: boolean }) {
+    const img = this.images.find((i) => i.id === event.id);
+    if (!img) return;
+
+    // increment likes
+    img.likedBy += event.liked ? 1 : -1;
+    this.galleriaService.updateImage(img);
+  }
+
   private setupGrid(): void {
-    this.breakpointObserver.observe([
-      Breakpoints.XSmall,
-      Breakpoints.Small,
-      Breakpoints.Medium,
-      Breakpoints.Large,
-    ]).subscribe(result => {
-      this.cols =
-        result.breakpoints[Breakpoints.XSmall] ? 1 :
-        result.breakpoints[Breakpoints.Small] ? 2 :
-        result.breakpoints[Breakpoints.Medium] ? 3 : 4;
-    });
+    this.breakpointObserver
+      .observe([
+        Breakpoints.XSmall,
+        Breakpoints.Small,
+        Breakpoints.Medium,
+        Breakpoints.Large,
+      ])
+      .subscribe((result) => {
+        this.cols = result.breakpoints[Breakpoints.XSmall]
+          ? 1
+          : result.breakpoints[Breakpoints.Small]
+          ? 2
+          : result.breakpoints[Breakpoints.Medium]
+          ? 3
+          : 4;
+      });
   }
 
   private fetchImages(): void {
     this.galleriaService.getGeneratedImages(20, 0).subscribe({
-      next: data => this.images = data,
-      error: err => console.error(err),
+      next: (data) => (this.images = data),
+      error: (err) => console.error(err),
     });
   }
 }

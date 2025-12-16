@@ -26,6 +26,9 @@ import { ProfilePictureComponent } from './components/profile-picture/profile-pi
 import { ProfileDialogComponent } from './components/profile-dialog/profile-dialog.component';
 import { CardViewComponent } from './components/card-view/card-view.component';
 import { SliderThumbComponent } from './components/slider-thumb/slider-thumb.component';
+import { ImageCardViewComponent } from './components/image-card-view/image-card-view.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { CarouselComponent } from './components/carousel/carousel.component';
 
 const components = [
   HeaderComponent,
@@ -34,7 +37,10 @@ const components = [
   ProfilePictureComponent,
   ProfileDialogComponent,
   CardViewComponent,
-  SliderThumbComponent
+  ImageCardViewComponent,
+  SliderThumbComponent,
+  ConfirmDialogComponent,
+  CarouselComponent
 ];
 
 const modules = [
