@@ -35,33 +35,33 @@ export class GalleryService {
       picture:
         'https://cdn.pixabay.com/photo/2025/11/28/16/07/frost-9983255_1280.jpg',
       createdAt: new Date().toISOString(),
-      likedBy: 18,
+      likedBy: 32,
     },
     {
       id: '5',
       picture: 'https://pixabay.com/images/download/x-9985148_1920.jpg',
       createdAt: new Date().toISOString(),
-      likedBy: 18,
+      likedBy: 1,
     },
     {
       id: '6',
       picture:
         'https://cdn.pixabay.com/photo/2025/10/24/11/12/tree-9913930_1280.jpg',
       createdAt: new Date().toISOString(),
-      likedBy: 18,
+      likedBy: 8,
     },
     {
       id: '7',
       picture: 'https://pixabay.com/images/download/x-7646958_1920.jpg',
       createdAt: new Date().toISOString(),
-      likedBy: 18,
+      likedBy: 34,
     },
     {
       id: '8',
       picture:
         'https://cdn.pixabay.com/photo/2024/05/20/16/50/landscape-8775773_1280.jpg',
       createdAt: new Date().toISOString(),
-      likedBy: 18,
+      likedBy: 56,
     },
   ];
 
@@ -147,20 +147,26 @@ export class GalleryService {
         'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
       categoryId: '3',
     },
-        {
+            {
       id: '9',
       picture:
         'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
-      categoryId: '4',
+      categoryId: '3',
     },
         {
       id: '10',
       picture:
         'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
-      categoryId: '5',
+      categoryId: '4',
     },
         {
       id: '11',
+      picture:
+        'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
+      categoryId: '5',
+    },
+        {
+      id: '12',
       picture:
         'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
       categoryId: '6',
@@ -210,6 +216,7 @@ export class GalleryService {
   async getImagesByCategory(
     categoryId: string,
   ): Promise<CategoryImageDto[]> {
-    return this.mockRealImagesByCategory; // TODO: Filter by ID
+    let filteredImgs: CategoryImageDto[] = this.mockRealImagesByCategory.filter((image) => image.categoryId === categoryId);
+    return filteredImgs
   }
 }
