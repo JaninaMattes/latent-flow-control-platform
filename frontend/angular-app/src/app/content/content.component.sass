@@ -1,8 +1,46 @@
+.content-container
+  width: 100%
+  min-height: 100vh
+  background-color: var(--bgColorSecondary)
+  color: var(--textColorPrimary)
+  padding: 1rem
+  box-sizing: border-box
+
+.content-header
+  max-width: 1200px
+  margin: 0 auto 1.5rem auto
+  padding-bottom: 1rem
+
+  h1
+    margin: 0 0 0.5rem 0
+    font-size: 2rem
+    font-weight: 600
+
+  p
+    margin: 0
+    opacity: 0.7
+    font-size: 0.95rem
+
+  
 .content-viewport
   display: flex
   flex-direction: column
   align-items: center
   gap: 1.5rem
+  min-height: 420px // reserve space to avoid layout movement
+
+.auto-width-dialog
+  mat-dialog-container
+    width: auto !important
+    display: inline-block
+
+.placeholder
+  display: flex
+  align-items: center
+  justify-content: center
+  height: 360px
+  font-style: italic
+  color: var(--textColorSecondary)
 
 .image-row
   display: flex
@@ -50,3 +88,32 @@
   display: flex
   justify-content: center
   width: 100%
+
+.action-bar
+  position: relative
+  width: 100%
+  padding: 6px
+  display: flex
+  justify-content: center
+  align-items: center
+  flex-wrap: wrap
+  margin: auto
+
+.select-btn
+  max-width: 255px
+  width: 100%
+  margin-top: 16px
+  border-radius: 4px
+  min-width: 120px
+  height: 40px
+  font-weight: 500
+  color: var(--btnTextPrimary)
+  background-color: var(--btnColorPrimary)
+  border: none
+  
+  &:hover
+    background: var(--bgHoverColor)
+
+  &.active
+    background: var(--highlightColorSecondary)
+    color: var(--textColorPrimary)
