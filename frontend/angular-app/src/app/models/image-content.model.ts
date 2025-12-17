@@ -6,6 +6,11 @@ export interface IGalleriaImageContent {
   likedBy: number;
 }
 
+export interface IUpdateGalleriaImage {
+  id: string;
+  likedBy: number;
+}
+
 
 export interface IGalleriaImageCategory {
   id: string;
