@@ -39,7 +39,8 @@ export class GalleryService {
     },
     {
       id: '5',
-      picture: 'https://pixabay.com/images/download/x-9985148_1920.jpg',
+      picture:
+        'https://cdn.pixabay.com/photo/2025/12/10/08/38/ash-10005812_1280.jpg',
       createdAt: new Date().toISOString(),
       likedBy: 1,
     },
@@ -52,7 +53,8 @@ export class GalleryService {
     },
     {
       id: '7',
-      picture: 'https://pixabay.com/images/download/x-7646958_1920.jpg',
+      picture:
+        'https://cdn.pixabay.com/photo/2024/11/18/10/19/europe-9205818_1280.jpg',
       createdAt: new Date().toISOString(),
       likedBy: 34,
     },
@@ -126,13 +128,13 @@ export class GalleryService {
     {
       id: '5',
       picture:
-        'https://cdn.pixabay.com/photo/2015/04/16/10/22/snow-leopard-725384_1280.jpg',
+        'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
       categoryId: '2',
     },
     {
       id: '6',
       picture:
-        'https://cdn.pixabay.com/photo/2018/03/16/00/45/leopard-3229940_1280.jpg',
+        'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
       categoryId: '2',
     },
     {
@@ -167,8 +169,27 @@ export class GalleryService {
     },
     {
       id: '12',
-      picture:
-        'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
+      picture: 'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      categoryId: '6',
+    },
+    {
+      id: '13',
+      picture: 'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      categoryId: '6',
+    },
+    {
+      id: '14',
+      picture: 'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      categoryId: '6',
+    },
+    {
+      id: '15',
+      picture: 'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      categoryId: '6',
+    },
+    {
+      id: '16',
+      picture: 'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
       categoryId: '6',
     },
   ];
