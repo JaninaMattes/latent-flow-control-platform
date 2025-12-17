@@ -3,14 +3,12 @@ import {
   EventEmitter,
   Input,
   Output,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 
 @Component({
   selector: 'app-card-view',
   templateUrl: './card-view.component.html',
   styleUrls: ['./card-view.component.sass'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardViewComponent {
   @Input() id!: string;
@@ -19,13 +17,15 @@ export class CardViewComponent {
   @Input() likes!: number;
   @Input() isLiked = false;
 
-  @Output() likedToggled = new EventEmitter<{ id: string; liked: boolean }>();
+  @Output() likeChanged = new EventEmitter<{ id: string; liked: boolean }>();
 
   public toggleLike(event: Event): void {
     event.stopPropagation();
-    this.likedToggled.emit({
+    this.isLiked = !this.isLiked;
+    
+    this.likeChanged.emit({
       id: this.id,
-      liked: !this.isLiked,
+      liked: this.isLiked,
     });
   }
 }
