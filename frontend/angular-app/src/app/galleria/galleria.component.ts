@@ -2,7 +2,10 @@
 import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { GalleriaService } from '../shared/services/galleria.service';
-import { IGalleriaImageContent } from '../models/image-content.model';
+import {
+  IGalleriaImageContent,
+  IUpdateGalleriaImage,
+} from '../models/image-content.model';
 @Component({
   selector: 'app-galleria',
   templateUrl: './galleria.component.html',
@@ -28,7 +31,20 @@ export class GalleriaComponent implements OnInit {
 
     // increment likes
     img.likedBy += event.liked ? 1 : -1;
-    this.galleriaService.updateImage(img);
+    const updateImg: IUpdateGalleriaImage = {
+      id: img.id,
+      likedBy: img.likedBy,
+    };
+    this.galleriaService.updateImageLikes(updateImg).subscribe({
+      next: (data) => {
+        const foundIndex = this.images.findIndex((x) => x.id === data.id);
+        if (foundIndex !== -1) {
+          this.images[foundIndex] = data;
+        }
+      },
+
+      error: (err) => console.error(err),
+    });
   }
 
   private setupGrid(): void {
