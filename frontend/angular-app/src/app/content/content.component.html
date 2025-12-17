@@ -4,6 +4,7 @@
         <p>{{ 'test' | translate }}</p>
     </div>
 
+    <!-- Render when 2 images are selected -->
     <div *ngIf="selectedImages.length === 2" class="content-viewport">
 
         <!-- Images row -->
@@ -41,5 +42,12 @@
 
     </div>
 
-    <button matButton (click)="openDialog()">Select Images</button>
+    <!-- Placeholder when less than 2 images are selected -->
+    <div *ngIf="selectedImages.length !== 2" class="placeholder">
+        Please select exactly two images to interpolate.
+    </div>
+
+    <div class="action-bar">
+        <button mat-flat-button color="primary" class="select-btn" (click)="openDialog()">Select Images</button>
+    </div>
 </div>

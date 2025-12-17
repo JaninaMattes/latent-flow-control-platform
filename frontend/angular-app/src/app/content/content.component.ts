@@ -39,9 +39,10 @@ export class ContentComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '900px',
+      maxWidth: '90vw',
       disableClose: true,
       data: {},
+      panelClass: 'auto-width-dialog',
     });
 
     dialogRef
