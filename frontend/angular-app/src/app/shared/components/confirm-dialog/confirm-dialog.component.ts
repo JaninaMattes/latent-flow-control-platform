@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import {
   IGalleriaImageCategory,
@@ -10,6 +10,7 @@ import { ContentService } from '../../services/content.service';
   selector: 'app-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
   styleUrls: ['./confirm-dialog.component.sass'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ConfirmDialogComponent implements OnInit {
   categories: IGalleriaImageCategory[] = [];
