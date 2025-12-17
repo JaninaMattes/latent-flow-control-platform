@@ -5,6 +5,11 @@ import {
   UseGuards,
   Query,
   Param,
+  Put,
+  Post,
+  Req,
+  Body,
+  Patch,
 } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JWTAuthGuard } from '../Google-auth/guards/jwt-auth.guard';
@@ -13,6 +18,7 @@ import {
   CategoryDto,
   ImageContentDto,
   ImageDto,
+  UpdateImageContentDto,
 } from './dto/image-content.dto';
 
 @ApiTags('Gallery')
@@ -23,7 +29,7 @@ export class GalleryController {
   constructor(private readonly galleryService: GalleryService) {}
 
   /**
-   * Fetches all generated content.
+   * Fetches all generated content from all users.
    * @param limit
    * @param offset
    * @returns
@@ -31,7 +37,7 @@ export class GalleryController {
   @ApiOperation({ summary: 'Retrieve all generated images.' })
   @ApiResponse({ status: 200, type: [ImageContentDto] })
   @UseGuards(JWTAuthGuard)
-  @Get('/gen-content')
+  @Get('/content')
   async getAllGeneratedContent(
     @Query('limit') limit = 10,
     @Query('offset') offset = 0,
@@ -43,6 +49,20 @@ export class GalleryController {
       Number(limit),
       Number(offset),
     );
+  }
+
+  /**
+   * Update likes of a generated image.
+   */
+  @ApiOperation({ summary: 'Update likes of a generated image.' })
+  @ApiParam({ name: 'imageId', description: 'Image ID' })
+  @ApiResponse({ status: 200, type: ImageContentDto })
+  @UseGuards(JWTAuthGuard)
+  @Patch('content/likes')
+  async updateImageLikes(
+    @Body() updateImage: UpdateImageContentDto,
+  ): Promise<ImageContentDto> {
+    return this.galleryService.updateImageLikes(updateImage);
   }
 
   /**

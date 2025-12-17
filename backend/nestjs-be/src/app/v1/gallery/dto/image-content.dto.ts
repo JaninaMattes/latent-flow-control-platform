@@ -23,6 +23,18 @@ export class ImageContentDto {
   likedBy?: number;
 }
 
+export class UpdateImageContentDto {
+  @ApiProperty({ description: 'Unique identifier of the generated content' })
+  @IsNotEmpty()
+  @IsString()
+  id: string;
+
+  @ApiProperty({ description: 'Number of likes', required: false })
+  @IsOptional()
+  @IsNumber()
+  likedBy?: number;
+}
+
 export class CategoryDto {
   @ApiProperty({ description: 'Unique identifier for an image category' })
   @IsNotEmpty()
@@ -52,3 +64,4 @@ export class ImageDto {
   @IsNotEmpty()
   categoryId: string;
 }
+

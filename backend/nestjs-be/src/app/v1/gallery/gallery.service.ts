@@ -1,8 +1,9 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import {
   CategoryDto,
   ImageContentDto,
   ImageDto,
+  UpdateImageContentDto,
 } from './dto/image-content.dto';
 
 @Injectable()
@@ -169,27 +170,32 @@ export class GalleryService {
     },
     {
       id: '12',
-      picture: 'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      picture:
+        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
       categoryId: '6',
     },
     {
       id: '13',
-      picture: 'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      picture:
+        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
       categoryId: '6',
     },
     {
       id: '14',
-      picture: 'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      picture:
+        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
       categoryId: '6',
     },
     {
       id: '15',
-      picture: 'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      picture:
+        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
       categoryId: '6',
     },
     {
       id: '16',
-      picture: 'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      picture:
+        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
       categoryId: '6',
     },
   ];
@@ -212,6 +218,29 @@ export class GalleryService {
         : this.mockGeneratedImages.length;
 
     return this.mockGeneratedImages.slice(start, end);
+  }
+
+  /**
+   * Update likes for generated images.
+   * @param updateImg
+   * @returns
+   */
+  async updateImageLikes(
+    updateImg: UpdateImageContentDto,
+  ): Promise<ImageContentDto> {
+    const index = this.mockGeneratedImages.findIndex(
+      (img) => img.id === updateImg.id,
+    );
+
+    if (index === -1) { // Image doesn't exist
+      throw new NotFoundException(`Image with id ${updateImg.id} not found`);
+    }
+
+    if (updateImg.likedBy !== undefined) {
+      this.mockGeneratedImages[index].likedBy = updateImg.likedBy;
+    }
+
+    return this.mockGeneratedImages[index];
   }
 
   /**
