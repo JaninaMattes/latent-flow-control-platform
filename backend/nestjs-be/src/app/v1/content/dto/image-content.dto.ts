@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString,IsOptional} from 'class-validator';
 
 export class CategoryDto {
   @ApiProperty({ description: 'Unique identifier for an image category' })
@@ -31,3 +31,20 @@ export class ImageDto {
   categoryId: string;
 }
 
+export class ImageFrameDto {
+  @ApiProperty({ description: 'Unique identifier for an image category' })
+  @IsNotEmpty()
+  @IsString()
+  id: string;
+
+  @ApiProperty({ description: 'Specifies the frame in an interpolation sequence.' })
+  @IsNotEmpty()
+  @IsNumber()
+  frameCount: number;
+
+  // S3 bucket: cloud front information
+  @ApiProperty({ description: 'URL of the image' })
+  @IsString()
+  @IsOptional()
+  picture?: string;
+}

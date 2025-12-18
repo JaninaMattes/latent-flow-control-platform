@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { CategoryDto, ImageDto } from './dto/image-content.dto';
+import { CategoryDto, ImageDto, ImageFrameDto } from './dto/image-content.dto';
 
 @Injectable()
 export class ContentService {
@@ -137,6 +137,96 @@ export class ContentService {
     },
   ];
 
+  private readonly mockSampleImages: ImageDto[] = [
+    {
+      id: '0',
+      picture:
+        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      categoryId: '6',
+    },
+    {
+      id: '1',
+      picture:
+        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      categoryId: '6',
+    },
+    {
+      id: '3',
+      picture:
+        'https://cdn.pixabay.com/animation/2025/08/06/06/37/06-37-33-94_512.gif',
+      categoryId: '6',
+    },
+  ];
+
+  private readonly mockSampleFrames: ImageFrameDto[] = [
+    {
+      id: '0',
+      frameCount: 0,
+      picture:
+        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+    },
+    {
+      id: '0',
+      frameCount: 1,
+      picture:
+        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+    },
+    {
+      id: '0',
+      frameCount: 2,
+      picture:
+        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+    },
+    {
+      id: '0',
+      frameCount: 3,
+      picture:
+        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+    },
+    {
+      id: '0',
+      frameCount: 4,
+      picture:
+        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+    },
+    {
+      id: '0',
+      frameCount: 5,
+      picture:
+        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+    },
+    {
+      id: '0',
+      frameCount: 6,
+      picture:
+        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+    },
+    {
+      id: '0',
+      frameCount: 7,
+      picture:
+        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+    },
+    {
+      id: '0',
+      frameCount: 8,
+      picture:
+        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+    },
+    {
+      id: '0',
+      frameCount: 9,
+      picture:
+        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+    },
+    {
+      id: '0',
+      frameCount: 10,
+      picture:
+        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+    },
+  ];
+
   /**
    * Get all image categories available.
    */
@@ -180,5 +270,23 @@ export class ContentService {
       (image) => image.categoryId === categoryId,
     );
     return filteredImgs;
+  }
+
+  /**
+   * Fetch a single frame based on the requested frame count number.
+   * @param requestedFrame
+   * @returns
+   */
+  async getSamplePerFrame(frameCount: number): Promise<ImageFrameDto> {
+    const frame = this.mockSampleFrames.find(
+      (image) => image.frameCount === frameCount,
+    );
+
+    if (!frame) {
+      this.logger.warn(`Frame ${frameCount} not found`);
+      return null; // or throw NotFoundException
+    }
+
+    return frame;
   }
 }
