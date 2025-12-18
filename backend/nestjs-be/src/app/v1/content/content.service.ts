@@ -227,6 +227,7 @@ export class ContentService {
     },
   ];
 
+
   /**
    * Get all image categories available.
    */
@@ -277,16 +278,11 @@ export class ContentService {
    * @param requestedFrame
    * @returns
    */
-  async getSamplePerFrame(frameCount: number): Promise<ImageFrameDto> {
-    const frame = this.mockSampleFrames.find(
-      (image) => image.frameCount === frameCount,
+  async getSamplePerFrame(selectedIds: string[], frameIndex: number): Promise<ImageFrameDto> {
+    const safeIndex = Math.max(
+      0,
+      Math.min(frameIndex, this.mockSampleFrames.length - 1),
     );
-
-    if (!frame) {
-      this.logger.warn(`Frame ${frameCount} not found`);
-      return null; // or throw NotFoundException
-    }
-
-    return frame;
+    return this.mockSampleFrames[safeIndex];
   }
 }

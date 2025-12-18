@@ -1,5 +1,4 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { IUserPayload } from '../models/google-auth-user.model';
 
@@ -8,8 +7,7 @@ export class GoogleAuthService {
   private readonly logger = new Logger(GoogleAuthService.name);
 
   constructor(
-    private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
+    private readonly jwtService: JwtService
   ) {}
 
   /** Generate JWT from Google profile */

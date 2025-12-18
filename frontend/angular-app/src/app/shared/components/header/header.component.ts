@@ -44,9 +44,9 @@ export class HeaderComponent implements OnInit {
   public navigateBasedOnAuth() {
   this.user$.pipe(take(1)).subscribe(user => {
     if (user) {
-      this.router.navigate(['/content']);  // logged in
+      this.router.navigate(['/content']);   // logged in
     } else {
-      this.router.navigate(['/home']);      // logged out
+      this.router.navigate(['/login']);     // logged out
     }
   });
 }

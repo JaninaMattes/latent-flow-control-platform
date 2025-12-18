@@ -34,7 +34,7 @@ export class GoogleAuthService {
 
         this.localStorage.removeItem('authState');
         this.authUserSubject.next(null);
-        this.router.navigate(['/home']);
+        this.router.navigate(['/login']);
       });
   }
 

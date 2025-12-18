@@ -3,13 +3,14 @@ import {
   Get,
   Logger,
   Param,
+  ParseIntPipe,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { ContentService } from './content.service';
 import { ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { JWTAuthGuard } from '../Google-auth/guards/jwt-auth.guard';
-import { CategoryDto, ImageDto } from './dto/image-content.dto';
+import { CategoryDto, ImageDto, ImageFrameDto } from './dto/image-content.dto';
 
 @Controller('content')
 export class ContentController {
@@ -50,12 +51,16 @@ export class ContentController {
    * Fetch an image based on its framecount.
    * @returns
    */
-  @ApiOperation({ summary: 'Retrieve all images based on their selected IDs.' })
-  @ApiResponse({ status: 200, type: [ImageDto] })
+  @ApiOperation({ summary: 'Retrieve a sample image frame by frame index.' })
+  @ApiResponse({ status: 200, type: ImageFrameDto })
   @UseGuards(JWTAuthGuard)
-  @Get('/images/samples')
-  async getSampleImages() {
-    return this.contentService.getSampleImages();
+  @Get('/interpolations')
+  async getInterpolationFrame(
+    @Query('ids') ids: string, // comma-separated IDs
+    @Query('frameIndex', ParseIntPipe) frameIndex: number,
+  ) {
+    const selectedIds: string[] = ids.split(',');
+    return this.contentService.getSamplePerFrame(selectedIds, frameIndex);
   }
 
   /**
