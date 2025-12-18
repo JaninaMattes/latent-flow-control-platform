@@ -2,7 +2,10 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ContentService } from '../shared/services/content.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/confirm-dialog.component';
-import { ImageContent } from '../models/image-content.model';
+import {
+  ImageContent,
+  InterpolationState,
+} from '../models/image-content.model';
 import { take } from 'rxjs';
 
 @Component({
@@ -13,6 +16,7 @@ import { take } from 'rxjs';
 export class ContentComponent implements OnInit {
   readonly dialog = inject(MatDialog);
 
+  interpolationState: InterpolationState | null = null;
   selectedImageIds: string[] = [];
   selectedImages: ImageContent[] = [];
 
@@ -27,7 +31,9 @@ export class ContentComponent implements OnInit {
 
   constructor(private readonly contentService: ContentService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.fetchSampleImages();
+  }
 
   public onInterpolationChange(value: number): void {
     this.interpolationValue = value;
@@ -95,5 +101,41 @@ export class ContentComponent implements OnInit {
   private requestStillFrame(value: number): void {
     // TODO: Remove dummy assets
     this.resultImgUrl = `https://cdn.pixabay.com/photo/2017/08/18/13/04/glass-2654887_${value}jpg`;
+  }
+  
+  private fetchSampleImages(): void {
+    //TODO: Fix
+    // this.contentService;
+  }
+
+  /**
+   * Instead of frequent loads, store in browser and fetch once
+   * to reduce network calls to backend.
+   * @param baseUrl
+   * @param frameCount
+   * @returns
+   */
+  private preloadImageFrames(baseUrl: string, frameCount: number): string[] {
+    const frames: string[] = [];
+    for (let i = 0; i < frameCount; i++) {
+      const url = `${baseUrl}${i}.png`;
+      const img = new Image();
+      img.src = url; // store in browser cache
+      frames.push(url);
+    }
+    return frames;
+  }
+
+  get currentFrameUrl(): string | null {
+    return (
+      this.interpolationState?.frames[this.interpolationState.currentIndex] ||
+      null
+    );
+  }
+
+  onSliderChange(value: number) {
+    if (!this.interpolationState) return;
+    this.interpolationState.currentIndex = value;
+    this.isPlayingGif = false;
   }
 }

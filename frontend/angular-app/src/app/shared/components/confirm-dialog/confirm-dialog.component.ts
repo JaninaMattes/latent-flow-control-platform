@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import {
-  IGalleriaImageCategory,
+  ImageCategory,
   ImageContent,
 } from 'src/app/models/image-content.model';
 import { ContentService } from '../../services/content.service';
@@ -13,8 +13,8 @@ import { ContentService } from '../../services/content.service';
   encapsulation: ViewEncapsulation.None
 })
 export class ConfirmDialogComponent implements OnInit {
-  categories: IGalleriaImageCategory[] = [];
-  selectedCategory: IGalleriaImageCategory | null = null;
+  categories: ImageCategory[] = [];
+  selectedCategory: ImageCategory | null = null;
 
   allImages: ImageContent[] = [];
   selectedImages: string[] = []; // keeps track of images based on their ID
@@ -56,7 +56,7 @@ export class ConfirmDialogComponent implements OnInit {
    * @param category
    * @returns
    */
-  public selectCategory(category: IGalleriaImageCategory): void {
+  public selectCategory(category: ImageCategory): void {
     if (this.selectedCategory?.id === category.id) return;
     this.selectedCategory = category;
     this.allImages = [];

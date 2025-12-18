@@ -1,10 +1,8 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import {
-  CategoryDto,
   ImageContentDto,
-  ImageDto,
   UpdateImageContentDto,
-} from './dto/image-content.dto';
+} from './dto/image-gallery.dto';
 
 @Injectable()
 export class GalleryService {
@@ -68,138 +66,6 @@ export class GalleryService {
     },
   ];
 
-  private readonly mockCategories: CategoryDto[] = [
-    {
-      id: '1',
-      category: 'Tiger',
-    },
-    {
-      id: '2',
-      category: 'Snow Leopard',
-    },
-    {
-      id: '3',
-      category: 'Lion',
-    },
-    {
-      id: '4',
-      category: 'Leopard',
-    },
-    {
-      id: '5',
-      category: 'Lorikeet',
-    },
-    {
-      id: '6',
-      category: 'Cockatoo',
-    },
-  ];
-
-  private readonly mockRealImagesByCategory: ImageDto[] = [
-    {
-      id: '0',
-      picture:
-        'https://cdn.pixabay.com/photo/2018/01/21/09/56/tiger-3096211_1280.jpg',
-      categoryId: '1',
-    },
-    {
-      id: '1',
-      picture:
-        'https://cdn.pixabay.com/photo/2018/01/21/09/56/tiger-3096211_1280.jpg',
-      categoryId: '1',
-    },
-    {
-      id: '2',
-      picture:
-        'https://cdn.pixabay.com/photo/2018/01/21/09/56/tiger-3096211_1280.jpg',
-      categoryId: '1',
-    },
-    {
-      id: '3',
-      picture:
-        'https://cdn.pixabay.com/photo/2018/01/21/09/56/tiger-3096211_1280.jpg',
-      categoryId: '1',
-    },
-    {
-      id: '4',
-      picture:
-        'https://cdn.pixabay.com/photo/2018/01/21/09/56/tiger-3096211_1280.jpg',
-      categoryId: '1',
-    },
-    {
-      id: '5',
-      picture:
-        'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
-      categoryId: '2',
-    },
-    {
-      id: '6',
-      picture:
-        'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
-      categoryId: '2',
-    },
-    {
-      id: '7',
-      picture:
-        'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
-      categoryId: '2',
-    },
-    {
-      id: '8',
-      picture:
-        'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
-      categoryId: '3',
-    },
-    {
-      id: '9',
-      picture:
-        'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
-      categoryId: '3',
-    },
-    {
-      id: '10',
-      picture:
-        'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
-      categoryId: '4',
-    },
-    {
-      id: '11',
-      picture:
-        'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
-      categoryId: '5',
-    },
-    {
-      id: '12',
-      picture:
-        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
-      categoryId: '6',
-    },
-    {
-      id: '13',
-      picture:
-        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
-      categoryId: '6',
-    },
-    {
-      id: '14',
-      picture:
-        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
-      categoryId: '6',
-    },
-    {
-      id: '15',
-      picture:
-        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
-      categoryId: '6',
-    },
-    {
-      id: '16',
-      picture:
-        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
-      categoryId: '6',
-    },
-  ];
-
   /**
    * Get generated images (with pagination).
    * In the future: replace with DB/S3 query.
@@ -232,7 +98,8 @@ export class GalleryService {
       (img) => img.id === updateImg.id,
     );
 
-    if (index === -1) { // Image doesn't exist
+    if (index === -1) {
+      // Image doesn't exist
       throw new NotFoundException(`Image with id ${updateImg.id} not found`);
     }
 
@@ -241,45 +108,5 @@ export class GalleryService {
     }
 
     return this.mockGeneratedImages[index];
-  }
-
-  /**
-   * Get all image categories available.
-   */
-  async getImageCategories(): Promise<CategoryDto[]> {
-    return [...this.mockCategories].sort(function (a, b) {
-      let nameA = a.category.toLowerCase(),
-        nameB = b.category.toLowerCase();
-      if (nameA < nameB)
-        //sort string ascending
-        return -1;
-      if (nameA > nameB) return 1;
-      return 0; //default return value (no sorting)
-    });
-  }
-
-  /**
-   * Get all images based on a specific category.
-   * @param category
-   * @returns
-   */
-  async getImagesByCategory(categoryId: string): Promise<ImageDto[]> {
-    let filteredImgs: ImageDto[] = this.mockRealImagesByCategory.filter(
-      (image) => image.categoryId === categoryId,
-    );
-    return filteredImgs;
-  }
-
-  async getImagesByIds(selectedImgIds: string[]): Promise<ImageDto[]> {
-    if (!selectedImgIds || selectedImgIds.length === 0) {
-      this.logger.warn(`Received no selected image ids.`);
-      return [];
-    }
-
-    const filteredImgs: ImageDto[] = this.mockRealImagesByCategory.filter(
-      (image) => selectedImgIds.includes(image.id),
-    );
-
-    return filteredImgs;
   }
 }

@@ -4,10 +4,6 @@ import {
   Logger,
   UseGuards,
   Query,
-  Param,
-  Put,
-  Post,
-  Req,
   Body,
   Patch,
 } from '@nestjs/common';
@@ -15,11 +11,9 @@ import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JWTAuthGuard } from '../Google-auth/guards/jwt-auth.guard';
 import { GalleryService } from './gallery.service';
 import {
-  CategoryDto,
   ImageContentDto,
-  ImageDto,
   UpdateImageContentDto,
-} from './dto/image-content.dto';
+} from './dto/image-gallery.dto';
 
 @ApiTags('Gallery')
 @Controller('gallery')
@@ -63,48 +57,5 @@ export class GalleryController {
     @Body() updateImage: UpdateImageContentDto,
   ): Promise<ImageContentDto> {
     return this.galleryService.updateImageLikes(updateImage);
-  }
-
-  /**
-   * Fetches all categories of images.
-   * @returns
-   */
-  @ApiOperation({ summary: 'Retrieve all generated images.' })
-  @ApiResponse({ status: 200, type: [CategoryDto] })
-  @UseGuards(JWTAuthGuard)
-  @Get('/categories')
-  async getAllCategoriesContent(): Promise<CategoryDto[]> {
-    this.logger.log(`Fetching all image categories.`);
-    return this.galleryService.getImageCategories();
-  }
-
-  /**
-   * Fetches all categories of images.
-   * @returns
-   */
-  @ApiOperation({ summary: 'Retrieve all generated images.' })
-  @ApiResponse({ status: 200, type: [ImageDto] })
-  @UseGuards(JWTAuthGuard)
-  @Get('/images')
-  async getSelectedImages(@Query('ids') ids: string) {
-    console.log('Received ids:', ids);
-    const selectedImgIds = ids ? ids.split(',') : [];
-    return this.galleryService.getImagesByIds(selectedImgIds);
-  }
-
-  /**
-   * Fetches all images per category.
-   * @returns
-   */
-  @ApiOperation({ summary: 'Retrieve all images by category ID.' })
-  @ApiParam({ name: 'categoryId', description: 'Category ID' })
-  @ApiResponse({ status: 200, type: [ImageDto] })
-  @UseGuards(JWTAuthGuard)
-  @Get('categories/:categoryId/images')
-  async getAllImagesByCategory(
-    @Param('categoryId') categoryId: string,
-  ): Promise<ImageDto[]> {
-    this.logger.log(`Fetching images for category ID: ${categoryId}`);
-    return this.galleryService.getImagesByCategory(categoryId);
   }
 }
