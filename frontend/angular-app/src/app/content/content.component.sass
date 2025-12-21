@@ -1,18 +1,16 @@
 .content-container
   width: 100%
-  min-height: 100vh
+  height: calc(100vh - 70px)
   background-color: var(--bgColorSecondary)
   color: var(--textColorPrimary)
-  padding: 1rem
+  padding: 0 2rem
   box-sizing: border-box
 
 .content-header
-  max-width: 1200px
-  margin: 0 auto 1.5rem auto
-  padding-bottom: 1rem
+  padding: 1rem 0
 
   h1
-    margin: 0 0 0.5rem 0
+    margin: 0 0 0.2rem 0
     font-size: 2rem
     font-weight: 600
 
@@ -21,36 +19,22 @@
     opacity: 0.7
     font-size: 0.95rem
 
-  
 .content-viewport
   display: flex
   flex-direction: column
   align-items: center
-  gap: 1.5rem
-  min-height: 420px // reserve space to avoid layout movement
-
-.auto-width-dialog
-  mat-dialog-container
-    width: auto !important
-    display: inline-block
-
-.placeholder
-  display: flex
-  align-items: center
   justify-content: center
-  height: 360px
-  font-style: italic
-  color: var(--textColorSecondary)
+  padding: 16px 0
+  min-height: 300px
 
-.image-row
-  display: flex
-  align-items: center
-  justify-content: center
-  gap: 2rem
-  width: 100%
-  max-width: 1200px
+.left-image
+  height: 400px
+  width: 400px
+  flex: 0 0 220px
 
-.side-image
+.right-image
+  height: 400px
+  width: 400px
   flex: 0 0 220px
 
 .interpolation-result
@@ -69,35 +53,110 @@
   border-radius: 12px
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25)
 
-.play-overlay
-  position: absolute
-  inset: 0
+
+.image-row
+  width: 100%
+  max-width: 1200px
+  height: 400px
+  display: flex
+  justify-content: center
+  align-items: center
+  gap: 24px
+
+.side-image,
+.interpolation-result
+  flex-shrink: 0
+
+  p
+    margin: 0
+    font-size: 0.95rem
+    font-weight: 200
+
+.sample-image
+  display: flex
+  flex-direction: column
+  align-items: center
+
+.interpolation-result
+  position: relative 
+  flex: 0 0 360px
+  height: 360px
   display: flex
   align-items: center
   justify-content: center
-  background: rgba(0, 0, 0, 0.35)
+
+  &:hover .play-overlay
+    opacity: 1
+    transform: scale(1.05)
+
+.result-image,
+.result-gif
+  width: 100%
+  height: 100%
+  object-fit: contain
+  border-radius: 12px
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25)
+
+.play-overlay
+  position: absolute
+  inset: 0
+  margin: auto
+
+  width: 64px
+  height: 64px
+  border-radius: 50%
+
+  background: rgba(0, 0, 0, 0.6)
   border: none
   cursor: pointer
-  border-radius: 12px
+
+  display: flex
+  align-items: center
+  justify-content: center
+
+  opacity: 0
+  transition: opacity 0.25s ease, transform 0.25s ease
+
+  &:hover
+    background: rgba(0, 0, 0, 0.75)
 
   mat-icon
-    font-size: 64px
     color: white
+    width: 45px
+
 
 .slider-row
+  width: 100%
   display: flex
   justify-content: center
-  width: 100%
+  align-items: center
 
+.slider-row app-slider-thumb
+  width: 300px
+
+
+.user-information
+  height: 20px
+  display: flex
+  align-items: center
+  justify-content: center
+  padding: 1rem 0
+  color: var(--textColorSecondary)
+
+  p
+    margin: 0
+    font-size: 0.95rem
+    font-weight: 200
+
+// action buttons
 .action-bar
   position: relative
   width: 100%
-  padding: 6px
   display: flex
   justify-content: center
   align-items: center
   flex-wrap: wrap
-  margin: auto
+  padding: 1rem 0
 
 .select-btn
   max-width: 255px
@@ -110,10 +169,15 @@
   color: var(--btnTextPrimary)
   background-color: var(--btnColorPrimary)
   border: none
-  
+
   &:hover
     background: var(--bgHoverColor)
 
   &.active
     background: var(--highlightColorSecondary)
     color: var(--textColorPrimary)
+
+.auto-width-dialog
+  mat-dialog-container
+  width: auto !important
+  display: inline-block

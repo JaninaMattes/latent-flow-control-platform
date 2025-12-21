@@ -9,7 +9,7 @@ export class SliderThumbComponent {
   @Input() min: number = 0;
   @Input() max: number = 100;
   @Input() step: number = 1;
-  @Input() value: number = 50;
+  @Input() sliderValue: number = 50;
   @Input() label: string = '';
   @Input() unit: string = '%';
   @Input() showTickMarks: boolean = true;
@@ -28,7 +28,7 @@ export class SliderThumbComponent {
   }
 
   onValueChange(newValue: number): void {
-    this.value = newValue;
+    this.sliderValue = newValue;
     this.valueChange.emit(newValue);
   }
 }

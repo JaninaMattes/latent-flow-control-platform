@@ -1,8 +1,8 @@
 <div class="slider-container">
   <label *ngIf="label" [attr.for]="sliderId">{{ label }}</label>
-  <mat-slider [id]="sliderId" [min]="min" [max]="max" [step]="step" [value]="value"
-    (input)="onValueChange($event.value)" showTickMarks [displayWith]="formatLabel">
+  <mat-slider [id]="sliderId" [min]="min" [max]="max" [step]="step" [value]="sliderValue"
+    (input)="onValueChange($event.value)" showTickMarks [displayWith]="formatLabel" [thumbLabel]="false">
   </mat-slider>
 
-  <div class="slider-value" *ngIf="showValue">{{ value }}{{ unit }}</div>
+  <div class="slider-value" *ngIf="showValue">{{ sliderValue }}{{ unit }}</div>
 </div>

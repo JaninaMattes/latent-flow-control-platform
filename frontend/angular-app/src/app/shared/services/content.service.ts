@@ -1,4 +1,4 @@
-// galleria.service.ts
+// content.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -6,7 +6,6 @@ import { environment } from 'src/environments/environment';
 import {
   ImageCategory,
   ImageContent,
-  ImageFrame,
 } from 'src/app/models/image-content.model';
 
 @Injectable({
@@ -14,26 +13,6 @@ import {
 })
 export class ContentService {
   constructor(private readonly http: HttpClient) {}
-
-  /**
-   * Retrieve a single image based on its frame ID.
-   * @param frameIndex
-   * @returns
-   */
-  public getSamplesPerFrame(
-    selectedIds: string[],
-    frameIndex: number
-  ): Observable<ImageFrame> {
-    const params = {
-      ids: selectedIds.join(','),
-      frameIndex: frameIndex.toString(),
-    };
-
-    return this.http.get<ImageFrame>(
-      `${environment.apiUrl}/content/interpolations`,
-      { params, withCredentials: true }
-    );
-  }
 
   /**
    * Fetch all possible categories.
@@ -63,11 +42,12 @@ export class ContentService {
    * @param selectedIds
    * @returns
    */
-  public getImagesById(selectedIds: string[]): Observable<ImageContent[]> {
+  public loadSelectedImages(selectedIds: string[]): Observable<ImageContent[]> {
     const params = { ids: selectedIds.join(',') };
     return this.http.get<ImageContent[]>(
       `${environment.apiUrl}/content/images`,
       { params, withCredentials: true }
     );
   }
+
 }

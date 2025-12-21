@@ -25,13 +25,8 @@ export interface ImageContent {
 }
 
 export interface ImageFrame {
-  id: string,
-  frameCount: number;
-  baseUrl?: string
-}
-
-export interface InterpolationState {
-  frames: string[];        // ordered frame URLs
-  currentIndex: number;    // slider-controlled
-  gifUrl?: string;         // optional autoplay Gif
+  id: string;
+  frameIndex: number;
+  picture: string; // URL to S3 or CDN
+  parentImageIds: string[];
 }

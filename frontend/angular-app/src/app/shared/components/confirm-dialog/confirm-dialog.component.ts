@@ -37,6 +37,9 @@ export class ConfirmDialogComponent implements OnInit {
     });
   }
 
+  /**
+   * Cancel dialog interaction.
+   */
   public cancel(): void {
     this.dialogRef.close();
   }
@@ -48,6 +51,7 @@ export class ConfirmDialogComponent implements OnInit {
       }
     } else {
       this.selectedImages = this.selectedImages.filter((id) => id !== event.id);
+      console.log('Filtered for image ID', event.id);
     }
   }
 
