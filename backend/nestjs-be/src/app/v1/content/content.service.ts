@@ -161,72 +161,82 @@ export class ContentService {
   private readonly mockSampleFrames: ImageFrameDto[] = [
     {
       id: '0',
-      frameCount: 0,
+      frameIndex: 0,
       picture:
         'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      parentImageIds: ['0', '1'],
     },
     {
       id: '0',
-      frameCount: 1,
+      frameIndex: 1,
       picture:
         'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      parentImageIds: ['0', '1'],
     },
     {
       id: '0',
-      frameCount: 2,
+      frameIndex: 2,
       picture:
         'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      parentImageIds: ['0', '1'],
     },
     {
       id: '0',
-      frameCount: 3,
+      frameIndex: 3,
       picture:
         'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      parentImageIds: ['0', '1'],
     },
     {
       id: '0',
-      frameCount: 4,
+      frameIndex: 4,
       picture:
         'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      parentImageIds: ['0', '1'],
     },
     {
       id: '0',
-      frameCount: 5,
+      frameIndex: 5,
       picture:
         'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      parentImageIds: ['0', '1'],
     },
     {
       id: '0',
-      frameCount: 6,
+      frameIndex: 6,
       picture:
         'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      parentImageIds: ['0', '1'],
     },
     {
       id: '0',
-      frameCount: 7,
+      frameIndex: 7,
       picture:
         'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      parentImageIds: ['0', '1'],
     },
     {
       id: '0',
-      frameCount: 8,
+      frameIndex: 8,
       picture:
         'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      parentImageIds: ['0', '1'],
     },
     {
       id: '0',
-      frameCount: 9,
+      frameIndex: 9,
       picture:
         'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      parentImageIds: ['0', '1'],
     },
     {
       id: '0',
-      frameCount: 10,
+      frameIndex: 10,
       picture:
         'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+      parentImageIds: ['0', '1'],
     },
   ];
-
 
   /**
    * Get all image categories available.
@@ -254,11 +264,13 @@ export class ContentService {
       return [];
     }
 
-    const filteredImgs: ImageDto[] = this.mockRealImagesByCategory.filter(
-      (image) => selectedImgIds.includes(image.id),
+    const imageMap = new Map(
+      this.mockRealImagesByCategory.map((img) => [img.id, img]),
     );
 
-    return filteredImgs;
+    return selectedImgIds
+      .map((id) => imageMap.get(id))
+      .filter((img): img is ImageDto => !!img);
   }
 
   /**
@@ -274,15 +286,16 @@ export class ContentService {
   }
 
   /**
-   * Fetch a single frame based on the requested frame count number.
-   * @param requestedFrame
+   * Fetch all frames once based on the selected initial image pairs, parent images,
+   * as well as the number of frames defining the linear interpolation.
+   * @param selectedIds
+   * @param numberOfFrames
    * @returns
    */
-  async getSamplePerFrame(selectedIds: string[], frameIndex: number): Promise<ImageFrameDto> {
-    const safeIndex = Math.max(
-      0,
-      Math.min(frameIndex, this.mockSampleFrames.length - 1),
-    );
-    return this.mockSampleFrames[safeIndex];
+  async getFrames(
+    selectedIds: string[],
+    numberOfFrames: number,
+  ): Promise<ImageFrameDto[]> {
+    return this.mockSampleFrames;
   }
 }

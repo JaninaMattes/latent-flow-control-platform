@@ -48,22 +48,6 @@ export class ContentController {
   }
 
   /**
-   * Fetch an image based on its framecount.
-   * @returns
-   */
-  @ApiOperation({ summary: 'Retrieve a sample image frame by frame index.' })
-  @ApiResponse({ status: 200, type: ImageFrameDto })
-  @UseGuards(JWTAuthGuard)
-  @Get('/interpolations')
-  async getInterpolationFrame(
-    @Query('ids') ids: string, // comma-separated IDs
-    @Query('frameIndex', ParseIntPipe) frameIndex: number,
-  ) {
-    const selectedIds: string[] = ids.split(',');
-    return this.contentService.getSamplePerFrame(selectedIds, frameIndex);
-  }
-
-  /**
    * Fetches all images for the selected IDs.
    * @returns
    */
@@ -71,9 +55,25 @@ export class ContentController {
   @ApiResponse({ status: 200, type: [ImageDto] })
   @UseGuards(JWTAuthGuard)
   @Get('/images')
-  async getSelectedImages(@Query('ids') ids: string) {
+  async getSelectedImages(@Query('ids') ids: string): Promise<ImageDto[]> {
     this.logger.log(`Fetching images for IDs ${JSON.stringify(ids)}.`);
     const selectedImgIds = ids ? ids.split(',') : [];
     return this.contentService.getImagesByIds(selectedImgIds);
+  }
+
+  /**
+   * Fetch an image based on its frame number.
+   * @returns
+   */
+  @ApiOperation({ summary: 'Retrieve a sample image frame by frame index.' })
+  @ApiResponse({ status: 200, type: ImageFrameDto })
+  @UseGuards(JWTAuthGuard)
+  @Get('/interpolation')
+  async getInterpolationFrames(
+    @Query('ids') ids: string, // comma-separated IDs
+    @Query('numberOfFrames') numberOfFrames: number,
+  ): Promise<ImageFrameDto[]> {
+    const selectedIds: string[] = ids.split(',');
+    return this.contentService.getFrames(selectedIds, numberOfFrames);
   }
 }
