@@ -4,47 +4,46 @@
         <p>{{ 'test' | translate }}</p>
     </div>
 
-    <!-- Render when 2 images are selected -->
-    <div *ngIf="selectedImages.length === 2" class="content-viewport">
-
-        <!-- Images row -->
+    <div class="content-viewport">
         <div class="image-row">
-
             <!-- Left image -->
-            <app-image-card-view class="side-image" [picture]="selectedImages[0].picture" [showBookmark]="false">
-            </app-image-card-view>
+            <div class="sample-image">
+                <app-image-card-view class="side-image" [picture]="firstSelectedImage?.picture" [showBookmark]="false">
+                </app-image-card-view>
+                <p>Source Image</p>
+            </div>
 
             <!-- Center interpolation -->
             <div class="interpolation-result">
-                <img *ngIf="resultImgUrl" [src]="resultImgUrl" class="result-image" alt="Interpolated result" />
+                <img *ngIf="interpolationState" [src]="interpolationState.picture" class="result-image"
+                    alt="Interpolated result" />
 
                 <!-- Play overlay -->
                 <button *ngIf="!isPlayingGif" class="play-overlay" (click)="playGif()">
-                    <mat-icon>play_circle</mat-icon>
+                    <mat-icon>play_arrow</mat-icon>
                 </button>
-
-                <img *ngIf="isPlayingGif && resultGifUrl" [src]="resultGifUrl" class="result-gif"
-                    alt="Interpolation animation" />
             </div>
 
-            <!-- Right image -->
-            <app-image-card-view class="side-image" [picture]="selectedImages[1].picture" [showBookmark]="false">
-            </app-image-card-view>
 
+            <!-- Right image -->
+            <div class="sample-image">
+                <app-image-card-view class="side-image" [picture]="secondSelectedImage?.picture" [showBookmark]="false">
+                </app-image-card-view>
+                <p>Target Image</p>
+            </div>
         </div>
 
         <!-- Slider -->
         <div class="slider-row">
-            <app-slider-thumb [min]="0" [max]="100" [step]="1" [showValue]="true" [(value)]="interpolationValue"
-                (valueChange)="onInterpolationChange($event)">
+            <app-slider-thumb [min]="0" [max]="100" [step]="1" [showValue]="true" [(sliderValue)]="currentSliderValue"
+                (valueChange)="onSliderChange($event)">
             </app-slider-thumb>
         </div>
 
     </div>
 
-    <!-- Placeholder when less than 2 images are selected -->
-    <div *ngIf="selectedImages.length !== 2" class="placeholder">
-        Please select exactly two images to interpolate.
+    <div *ngIf="selectedImageIds.length !== 2" class="user-information">
+        <p>Please select two images to interpolate.</p>
     </div>
 
     <div class="action-bar">

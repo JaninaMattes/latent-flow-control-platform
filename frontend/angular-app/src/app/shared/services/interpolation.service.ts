@@ -17,7 +17,7 @@ export class InterpolationService {
    * @param frameIndex
    * @returns
    */
-  public getFrames(
+  public loadInterpolationFrames(
     selectedIds: string[],
     numberOfFrames: number
   ): Observable<ImageFrame[]> {
@@ -33,73 +33,29 @@ export class InterpolationService {
   }
 
   /**
-   * As slider values and frames follow different
-   * scales, the computation of a slope value allows
-   * for linear transformation into a justified scale.
-   * @param yStart
-   * @param yEnd
-   * @param xStart
-   * @param xEnd
-   * @returns
-   */
-  public computeSliderSlope(
-    yStart: number,
-    yEnd: number,
-    xStart: number,
-    xEnd: number
-  ): number {
-    // Normalize and pre-compute slope
-    return (yEnd - yStart) * (1 / (xEnd - xStart));
-  }
-
-  /**
-   * Compute frame index based on normalized
-   * slider value and amount of available frames.
-   * @param yStart
-   * @param xStart
-   * @param inputValue
-   * @param sliderValueSlope
-   * @returns
-   */
-  public getFrameIndex(
-    yStart: number,
-    xStart: number,
-    inputValue: number,
-    sliderValueSlope: number
-  ): number {
-    let frameIndex: number = 0;
-    if (sliderValueSlope != 0) {
-      frameIndex = Math.round(yStart + sliderValueSlope * (inputValue - xStart));
-    }
-    console.log(`Found frame index ${frameIndex}`);
-    return frameIndex;
-  }
-
-  /**
-   * Retrieve the linearly transformed correct 
-   * frame of the interpolation.
+   * Retrive correct frame using linear transformation
+   * between slider range and available frame range.
    * @param frames
    * @param sliderValue
-   * @param sliderValueSlope
-   * @param sliderStartValue
-   * @param firstFrame
+   * @param sliderMin
+   * @param sliderMax
    * @returns
    */
   public getInterpolatedFrame(
     frames: ImageFrame[],
     sliderValue: number,
-    sliderValueSlope: number,
-    sliderStartValue = 0,
-    firstFrame = 0
+    sliderMin = 0,
+    sliderMax = 100
   ): ImageFrame | null {
-    let frameIndex: number = this.getFrameIndex(
-      sliderStartValue,
-      firstFrame, // first frame index
-      sliderValueSlope,
-      sliderValue
-    );
+    if (!frames.length) return null;
 
-    console.log(`Found index ${frameIndex}`);
+    const clampedSlider = Math.min(Math.max(sliderValue, sliderMin), sliderMax);
+
+    const frameCount = frames.length;
+    const normalized = (clampedSlider - sliderMin) / (sliderMax - sliderMin);
+
+    const frameIndex = Math.round(normalized * (frameCount - 1));
+
     return frames[frameIndex];
   }
 }
