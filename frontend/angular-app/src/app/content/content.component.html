@@ -22,8 +22,10 @@
                 <button *ngIf="!isPlayingGif" class="play-overlay" (click)="playGif()">
                     <mat-icon>play_arrow</mat-icon>
                 </button>
+                <button *ngIf="isPlayingGif" class="play-overlay" (click)="stopGif()">
+                    <mat-icon>pause</mat-icon>
+                </button>
             </div>
-
 
             <!-- Right image -->
             <div class="sample-image">

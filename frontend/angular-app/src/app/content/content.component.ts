@@ -27,7 +27,7 @@ export class ContentComponent implements OnInit, OnDestroy {
   private static readonly SLIDER_MIN = 0;
   private static readonly SLIDER_MAX = 100;
   private static readonly DEFAULT_FRAMES = 20;
-  private static readonly AUTO_PLAY_DELAY_MS = 3000;
+  private static readonly AUTO_PLAY_DELAY_MS = 4000;
   private static readonly ANIMATION_DURATION_MS = 1500;
 
   private readonly destroy$ = new Subject<void>();
@@ -37,10 +37,10 @@ export class ContentComponent implements OnInit, OnDestroy {
 
   isPlayingGif = false;
 
-  selectedImageIds: string[] = []; // User selected image Ids 
-  firstSelectedImage: ImageContent | null = null; 
-  secondSelectedImage: ImageContent | null = null; 
-  interpolationFrames: ImageFrame[] = []; 
+  selectedImageIds: string[] = []; // User selected image Ids
+  firstSelectedImage: ImageContent | null = null;
+  secondSelectedImage: ImageContent | null = null;
+  interpolationFrames: ImageFrame[] = [];
   interpolationState: ImageFrame | null = null;
   currentSliderValue = 50;
 
@@ -58,6 +58,18 @@ export class ContentComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  // ----------------------------
+  // Images
+  // ----------------------------
+
+  private setupImages(): void {
+    const selectedDefaultIds: string[] = ['0', '1']; // TODO: Update logic
+    this.fetchSelectedImages(
+      selectedDefaultIds,
+      ContentComponent.DEFAULT_FRAMES
+    );
   }
 
   // ----------------------------
@@ -85,16 +97,12 @@ export class ContentComponent implements OnInit, OnDestroy {
         const index = Math.floor(progress * this.interpolationFrames.length);
 
         this.interpolationState = this.interpolationFrames[index];
+        console.log(`New interpolation index`, index);
       });
 
     this.stop$
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => (this.isPlayingGif = false));
-  }
-
-  private setupImages(): void {
-    const selectedDefaultIds: string[] = ['0', '1']; // TODO: Update logic 
-    this.fetchSelectedImages( selectedDefaultIds, ContentComponent.DEFAULT_FRAMES );
   }
 
   // ----------------------------
@@ -119,21 +127,26 @@ export class ContentComponent implements OnInit, OnDestroy {
   }
 
   stopGif(): void {
+    this.isPlayingGif = false;
     this.stop$.next();
     this.inactivity$.next();
   }
 
   onSliderChange(value: number): void {
+    // Set new slider value
     this.currentSliderValue = value;
+    this.computeInterpolation(value);
 
-    if (!this.isPlayingGif) {
-      this.computeInterpolation(value);
-    }
-
-    this.inactivity$.next();
+    // Stop GiF play
+    this.stopGif();
   }
 
-  /** * Open dialog for image selection. */ openDialog(): void {
+  /** * Open dialog for image selection. */
+  openDialog(): void {
+    // Stop GiF play
+    this.stopGif();
+
+    // Open Dialog and Listen to Close
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       maxWidth: '90vw',
       disableClose: true,
@@ -151,15 +164,6 @@ export class ContentComponent implements OnInit, OnDestroy {
           ContentComponent.DEFAULT_FRAMES
         );
       });
-  }
-
-  private computeInterpolation(sliderValue: number): void {
-    this.interpolationState = this.interpolationService.getInterpolatedFrame(
-      this.interpolationFrames,
-      sliderValue,
-      ContentComponent.SLIDER_MIN,
-      ContentComponent.SLIDER_MAX
-    );
   }
 
   private fetchSelectedImages(
@@ -189,5 +193,18 @@ export class ContentComponent implements OnInit, OnDestroy {
         this.interpolationFrames = frames;
         this.computeInterpolation(this.currentSliderValue);
       });
+  }
+
+  private computeInterpolation(sliderValue: number): void {
+    this.interpolationState = this.interpolationService.getInterpolatedFrame(
+      this.interpolationFrames,
+      sliderValue,
+      ContentComponent.SLIDER_MIN,
+      ContentComponent.SLIDER_MAX
+    );
+    console.log(
+      `Interpolation state index`,
+      this.interpolationState?.frameIndex
+    );
   }
 }
