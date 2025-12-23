@@ -10,11 +10,13 @@ import {
   catchError,
   of,
   take,
+  finalize,
 } from 'rxjs';
 import { ImageContent, ImageFrame } from '../models/image-content.model';
 import { ContentService } from '../shared/services/content.service';
 import { InterpolationService } from '../shared/services/interpolation.service';
 import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/confirm-dialog.component';
+import { LoadingService } from '../shared/services/spinner-loader.service';
 
 @Component({
   selector: 'app-content',
@@ -27,7 +29,7 @@ export class ContentComponent implements OnInit, OnDestroy {
   private static readonly SLIDER_MIN = 0;
   private static readonly SLIDER_MAX = 100;
   private static readonly DEFAULT_FRAMES = 20;
-  private static readonly AUTO_PLAY_DELAY_MS = 3000;
+  private static readonly AUTO_PLAY_DELAY_MS = 6000;
   private static readonly ANIMATION_DURATION_MS = 1500;
 
   private readonly destroy$ = new Subject<void>();
@@ -37,16 +39,17 @@ export class ContentComponent implements OnInit, OnDestroy {
 
   isPlayingGif = false;
 
-  selectedImageIds: string[] = []; // User selected image Ids 
-  firstSelectedImage: ImageContent | null = null; 
-  secondSelectedImage: ImageContent | null = null; 
-  interpolationFrames: ImageFrame[] = []; 
+  selectedImageIds: string[] = []; // User selected image Ids
+  firstSelectedImage: ImageContent | null = null;
+  secondSelectedImage: ImageContent | null = null;
+  interpolationFrames: ImageFrame[] = [];
   interpolationState: ImageFrame | null = null;
   currentSliderValue = 50;
 
   constructor(
     private readonly contentService: ContentService,
-    private readonly interpolationService: InterpolationService
+    private readonly interpolationService: InterpolationService,
+    private readonly loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -58,6 +61,18 @@ export class ContentComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  // ----------------------------
+  // Images
+  // ----------------------------
+
+  private setupImages(): void {
+    const selectedDefaultIds: string[] = ['0', '1']; // TODO: Update logic
+    this.fetchSelectedImages(
+      selectedDefaultIds,
+      ContentComponent.DEFAULT_FRAMES
+    );
   }
 
   // ----------------------------
@@ -83,18 +98,12 @@ export class ContentComponent implements OnInit, OnDestroy {
           ContentComponent.ANIMATION_DURATION_MS;
 
         const index = Math.floor(progress * this.interpolationFrames.length);
-
         this.interpolationState = this.interpolationFrames[index];
       });
 
     this.stop$
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => (this.isPlayingGif = false));
-  }
-
-  private setupImages(): void {
-    const selectedDefaultIds: string[] = ['0', '1']; // TODO: Update logic 
-    this.fetchSelectedImages( selectedDefaultIds, ContentComponent.DEFAULT_FRAMES );
   }
 
   // ----------------------------
@@ -121,19 +130,26 @@ export class ContentComponent implements OnInit, OnDestroy {
   stopGif(): void {
     this.stop$.next();
     this.inactivity$.next();
+    this.isPlayingGif = false;
   }
 
   onSliderChange(value: number): void {
+    // Set new slider value
     this.currentSliderValue = value;
+    this.computeInterpolation(value);
 
-    if (!this.isPlayingGif) {
-      this.computeInterpolation(value);
-    }
-
-    this.inactivity$.next();
+    // Stop GiF play
+    this.stopGif();
   }
 
-  /** * Open dialog for image selection. */ openDialog(): void {
+  /**
+   * Open dialog for image selection.
+   */
+  openDialog(): void {
+    // Stop GiF play
+    this.stopGif();
+
+    // Open Dialog and Listen to Close
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       maxWidth: '90vw',
       disableClose: true,
@@ -153,19 +169,11 @@ export class ContentComponent implements OnInit, OnDestroy {
       });
   }
 
-  private computeInterpolation(sliderValue: number): void {
-    this.interpolationState = this.interpolationService.getInterpolatedFrame(
-      this.interpolationFrames,
-      sliderValue,
-      ContentComponent.SLIDER_MIN,
-      ContentComponent.SLIDER_MAX
-    );
-  }
-
   private fetchSelectedImages(
     selectedIds: string[],
     numberOfFrames: number
   ): void {
+    this.loadingService.startLoading();
     this.contentService
       .loadSelectedImages(selectedIds)
       .pipe(
@@ -179,15 +187,28 @@ export class ContentComponent implements OnInit, OnDestroy {
             numberOfFrames
           )
         ),
+        tap((frames) => {
+          this.interpolationFrames = frames;
+          this.computeInterpolation(this.currentSliderValue);
+        }),
         catchError((err) => {
-          console.error(err);
+          console.error('Error loading images or frames', err);
           return of([] as ImageFrame[]);
+        }),
+        finalize(() => {
+          this.loadingService.stopLoading()
         }),
         takeUntil(this.destroy$)
       )
-      .subscribe((frames) => {
-        this.interpolationFrames = frames;
-        this.computeInterpolation(this.currentSliderValue);
-      });
+      .subscribe();
+  }
+
+  private computeInterpolation(sliderValue: number): void {
+    this.interpolationState = this.interpolationService.getInterpolatedFrame(
+      this.interpolationFrames,
+      sliderValue,
+      ContentComponent.SLIDER_MIN,
+      ContentComponent.SLIDER_MAX
+    );
   }
 }

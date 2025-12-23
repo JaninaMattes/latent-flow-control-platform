@@ -233,7 +233,7 @@ export class ContentService {
       id: '0',
       frameIndex: 10,
       picture:
-        'https://cdn.pixabay.com/photo/2025/10/27/13/18/kitten-9920257_1280.jpg',
+        'https://cdn.pixabay.com/photo/2015/09/09/08/40/snow-leopard-931222_1280.jpg',
       parentImageIds: ['0', '1'],
     },
   ];
