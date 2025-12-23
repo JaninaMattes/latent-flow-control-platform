@@ -10,7 +10,7 @@
             <div class="sample-image">
                 <app-image-card-view class="side-image" [picture]="firstSelectedImage?.picture" [showBookmark]="false">
                 </app-image-card-view>
-                <p>Source Image</p>
+                <p class="side-image-title">Source Image</p>
             </div>
 
             <!-- Center interpolation -->
@@ -31,21 +31,35 @@
             <div class="sample-image">
                 <app-image-card-view class="side-image" [picture]="secondSelectedImage?.picture" [showBookmark]="false">
                 </app-image-card-view>
-                <p>Target Image</p>
+                <p class="side-image-title">Target Image</p>
             </div>
         </div>
 
-        <!-- Slider -->
-        <div class="slider-row">
-            <app-slider-thumb [min]="0" [max]="100" [step]="1" [showValue]="true" [(sliderValue)]="currentSliderValue"
-                (valueChange)="onSliderChange($event)">
-            </app-slider-thumb>
+        <!-- Slider bar -->
+        <div class="slider-bar">
+            <div class="slider-row">
+                <p class="slider-title">Interpolation: </p>
+                <app-slider-thumb [min]="0" [max]="100" [step]="1" [showValue]="true"
+                    [(sliderValue)]="currentSliderValue" (valueChange)="onSliderChange($event)">
+                </app-slider-thumb>
+            </div>
+            <div class="slider-row disabled">
+                <p class="slider-title">Zoom: </p>
+                <app-slider-thumb [min]="0" [max]="100" [step]="1" [showValue]="true" [disabled]="true">
+                </app-slider-thumb>
+            </div>
+            <div class="slider-row disabled">
+                <p class="slider-title">Color: </p>
+                <app-slider-thumb [min]="0" [max]="100" [step]="1" [showValue]="true" [disabled]="true">
+                </app-slider-thumb>
+            </div>
+
         </div>
 
     </div>
 
     <div *ngIf="selectedImageIds.length !== 2" class="user-information">
-        <p>Please select two images to interpolate.</p>
+        <p class="user-information-text">Please select two images to interpolate.</p>
     </div>
 
     <div class="action-bar">
