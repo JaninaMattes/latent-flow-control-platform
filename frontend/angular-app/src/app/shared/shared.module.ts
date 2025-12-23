@@ -14,6 +14,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
 import {MatCardModule} from '@angular/material/card';
 import {MatSliderModule} from '@angular/material/slider';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -50,6 +51,7 @@ const modules = [
   MatSliderModule,
   MatIconModule,
   MatMenuModule,
+  MatProgressBarModule,
   FormsModule,
   MatFormFieldModule,
   MatInputModule,

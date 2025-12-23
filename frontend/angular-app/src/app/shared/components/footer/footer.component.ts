@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { LoadingService } from '../../services/spinner-loader.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-footer',
@@ -7,7 +9,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
-  constructor() { }
+  isLoading$: Observable<boolean>;
+
+  constructor(private readonly loadingService: LoadingService) { 
+    this.isLoading$ = this.loadingService.isLoading$;
+  }
 
   ngOnInit(): void {
   }

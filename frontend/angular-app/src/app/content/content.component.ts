@@ -10,11 +10,13 @@ import {
   catchError,
   of,
   take,
+  finalize,
 } from 'rxjs';
 import { ImageContent, ImageFrame } from '../models/image-content.model';
 import { ContentService } from '../shared/services/content.service';
 import { InterpolationService } from '../shared/services/interpolation.service';
 import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/confirm-dialog.component';
+import { LoadingService } from '../shared/services/spinner-loader.service';
 
 @Component({
   selector: 'app-content',
@@ -27,7 +29,7 @@ export class ContentComponent implements OnInit, OnDestroy {
   private static readonly SLIDER_MIN = 0;
   private static readonly SLIDER_MAX = 100;
   private static readonly DEFAULT_FRAMES = 20;
-  private static readonly AUTO_PLAY_DELAY_MS = 4000;
+  private static readonly AUTO_PLAY_DELAY_MS = 6000;
   private static readonly ANIMATION_DURATION_MS = 1500;
 
   private readonly destroy$ = new Subject<void>();
@@ -46,7 +48,8 @@ export class ContentComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly contentService: ContentService,
-    private readonly interpolationService: InterpolationService
+    private readonly interpolationService: InterpolationService,
+    private readonly loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -95,9 +98,7 @@ export class ContentComponent implements OnInit, OnDestroy {
           ContentComponent.ANIMATION_DURATION_MS;
 
         const index = Math.floor(progress * this.interpolationFrames.length);
-
         this.interpolationState = this.interpolationFrames[index];
-        console.log(`New interpolation index`, index);
       });
 
     this.stop$
@@ -127,9 +128,9 @@ export class ContentComponent implements OnInit, OnDestroy {
   }
 
   stopGif(): void {
-    this.isPlayingGif = false;
     this.stop$.next();
     this.inactivity$.next();
+    this.isPlayingGif = false;
   }
 
   onSliderChange(value: number): void {
@@ -141,7 +142,9 @@ export class ContentComponent implements OnInit, OnDestroy {
     this.stopGif();
   }
 
-  /** * Open dialog for image selection. */
+  /**
+   * Open dialog for image selection.
+   */
   openDialog(): void {
     // Stop GiF play
     this.stopGif();
@@ -170,6 +173,7 @@ export class ContentComponent implements OnInit, OnDestroy {
     selectedIds: string[],
     numberOfFrames: number
   ): void {
+    this.loadingService.startLoading();
     this.contentService
       .loadSelectedImages(selectedIds)
       .pipe(
@@ -183,16 +187,20 @@ export class ContentComponent implements OnInit, OnDestroy {
             numberOfFrames
           )
         ),
+        tap((frames) => {
+          this.interpolationFrames = frames;
+          this.computeInterpolation(this.currentSliderValue);
+        }),
         catchError((err) => {
-          console.error(err);
+          console.error('Error loading images or frames', err);
           return of([] as ImageFrame[]);
+        }),
+        finalize(() => {
+          this.loadingService.stopLoading()
         }),
         takeUntil(this.destroy$)
       )
-      .subscribe((frames) => {
-        this.interpolationFrames = frames;
-        this.computeInterpolation(this.currentSliderValue);
-      });
+      .subscribe();
   }
 
   private computeInterpolation(sliderValue: number): void {
@@ -201,10 +209,6 @@ export class ContentComponent implements OnInit, OnDestroy {
       sliderValue,
       ContentComponent.SLIDER_MIN,
       ContentComponent.SLIDER_MAX
-    );
-    console.log(
-      `Interpolation state index`,
-      this.interpolationState?.frameIndex
     );
   }
 }
