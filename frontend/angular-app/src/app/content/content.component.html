@@ -37,18 +37,18 @@
 
         <!-- Slider bar -->
         <div class="slider-bar">
-            <div class="slider-row">
+            <div class="slider-item">
                 <p class="slider-title">Interpolation: </p>
                 <app-slider-thumb [min]="0" [max]="100" [step]="1" [showValue]="true"
                     [(sliderValue)]="currentSliderValue" (valueChange)="onSliderChange($event)">
                 </app-slider-thumb>
             </div>
-            <div class="slider-row disabled">
+            <div class="slider-item disabled">
                 <p class="slider-title">Zoom: </p>
                 <app-slider-thumb [min]="0" [max]="100" [step]="1" [showValue]="true" [disabled]="true">
                 </app-slider-thumb>
             </div>
-            <div class="slider-row disabled">
+            <div class="slider-item disabled">
                 <p class="slider-title">Color: </p>
                 <app-slider-thumb [min]="0" [max]="100" [step]="1" [showValue]="true" [disabled]="true">
                 </app-slider-thumb>

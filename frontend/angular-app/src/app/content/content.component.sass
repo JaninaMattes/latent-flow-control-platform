@@ -58,10 +58,11 @@
 .image-row
   width: 100%
   max-width: 1200px
-  height: 400px
+  height: 380px
   display: flex
   justify-content: center
   align-items: center
+  margin: 1rem 0
   gap: 24px
 
 .side-image,
@@ -129,41 +130,46 @@
     width: 45px
 
 
+// Slider bar
 .slider-bar
   width: 100%
-  margin: 1rem 0
   display: flex
   flex-direction: row
   vertical-align: middle
   align-items: center
   justify-content: center
+  padding: 1rem 0
   gap: 1rem
 
-.slider-row
-  height: 65px
+.slider-item
+  height: 45px
+  max-width: 210px
   display: flex 
+  flex-direction: row
   vertical-align: middle
-  background-color: var(--bgColorPrimary)
-  // border: 1px solid var(--textColorPrimary)
-  border-radius: 12px
-
-.slider-title
-  width: 100px
-  font-size: 0.95rem
-  font-weight: 300
-  color: var(--textColorPrimary)
+  align-items: center
+  background: var(--bgColorPrimary)
+  border-radius: 30px
   padding: 0.7rem
 
-.slider-row.disabled
+
+.slider-title
+  width: 100%
+  font-size: 0.75rem
+  font-weight: 300
+  color: var(--textColorPrimary)
+  align-items: center
+
+.slider-item.disabled
   opacity: 0.5
   pointer-events: none
 
 
-.slider-row app-slider-thumb
+.slider-item app-slider-thumb
   width: 150px
   height: 55px
 
-
+// User information for custom selection
 .user-information
   height: 20px
   display: flex
