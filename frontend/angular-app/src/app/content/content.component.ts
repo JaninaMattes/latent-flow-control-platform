@@ -30,7 +30,7 @@ export class ContentComponent implements OnInit, OnDestroy {
   private static readonly SLIDER_MAX = 100;
   private static readonly DEFAULT_FRAMES = 20;
   private static readonly AUTO_PLAY_DELAY_MS = 6000;
-  private static readonly ANIMATION_DURATION_MS = 1500;
+  private static readonly ANIMATION_DURATION_MS = 3500;
 
   private readonly destroy$ = new Subject<void>();
   private readonly play$ = new Subject<void>();

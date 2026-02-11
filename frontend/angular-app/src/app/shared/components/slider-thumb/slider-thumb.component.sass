@@ -2,19 +2,14 @@
   width: 100%
   height: 100%
 
-  label
-    display: block
-    margin-bottom: 0.5rem
-    font-weight: 500
-    font-size: 0.9rem
-    color: var(--textColorPrimary)
+mat-slider
+  width: 100%
+  height: 35px
+  margin-bottom: 0.1rem
 
-  mat-slider
-    width: 100%
-
-    ::ng-deep .mat-slider-thumb
-      background-color: var(--textColorPrimary) !important
-      border-color: var(--textColorPrimary) !important
+  ::ng-deep .mat-slider-thumb
+    background-color: var(--textColorPrimary) !important
+    border-color: var(--textColorPrimary) !important
 
     /* Inactive track */
     ::ng-deep .mat-slider-track-background
@@ -24,8 +19,7 @@
     ::ng-deep .mat-slider-track-wrapper
       background: none !important
 
-  .slider-value
-    text-align: center
-    margin-top: 0.5rem
-    font-size: 0.85rem
-    opacity: 0.8
+.slider-value
+  text-align: center
+  font-size: 0.75rem
+  opacity: 0.8
