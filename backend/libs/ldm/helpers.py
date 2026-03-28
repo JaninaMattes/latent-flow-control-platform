@@ -1,6 +1,5 @@
 # Code adapted from:
 # - https://github.com/CompVis/fm-boosting/blob/main/fmboost/helpers.py
-
 from functools import partial
 import importlib
 from inspect import isfunction

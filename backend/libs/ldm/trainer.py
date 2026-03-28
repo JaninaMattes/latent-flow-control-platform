@@ -1,25 +1,22 @@
+from typing import Optional
 import wandb
 import torch
 import einops
-
 from PIL import Image
 from functools import partial
 import numpy as np
-from typing import Optional
 
 import torch
 from lightning import LightningModule
 from lightning.pytorch.loggers import WandbLogger
 from torchmetrics.image.fid import FrechetInceptionDistance
 
-# Jutils package
 from jutils import instantiate_from_config
 from jutils import load_partial_from_config
 from jutils import exists, freeze, default
 
-# Other
-from ema import EMA
-from helpers import resize_ims, denorm_tensor
+from ldm.ema import EMA
+from ldm.helpers import resize_ims, denorm_tensor
 
 
 def un_normalize_img(img):
@@ -340,7 +337,7 @@ class TrainerModuleLatentFlow(LightningModule):
         if batch_idx % self.log_every == 0:   
             
             # For visualization
-            latent_gt = (z)
+            latent_gt = denorm_tensor(z)
             latent_target = denorm_tensor(x1_latent)
             latent_pred = denorm_tensor(pred_samples)
                

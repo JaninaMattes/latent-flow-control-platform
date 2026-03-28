@@ -5,7 +5,17 @@ from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.responses import JSONResponse
 
 from typing import List
-import math
+import math 
+
+app = FastAPI(
+    title="LatentFlow Inference API",
+    description="API for controlled generative image manipulation using VAEs and Flow-Matching models.",
+    version="1.0.0",
+)
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
 
 # Custom module
 # from inference.model_loader import load_model
@@ -15,17 +25,6 @@ import math
 # MODEL_PATH = "/models/DiTXL-05x01x01b-last.ckpt"
 # model = load_model(MODEL_PATH, device="cuda")
 
-
-app = FastAPI(
-    title="LatentFlow Inference API",
-    description="API for controlled generative image manipulation using VAEs and Flow-Matching models.",
-    version="1.0.0"
-)
-
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
 
 
 # def generate_dummy_sequence(num_steps: int):
