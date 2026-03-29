@@ -1,4 +1,5 @@
 import os 
+from pathlib import Path
 import sys
 import torch
 
@@ -18,7 +19,11 @@ from ldm.frameworks.beta_vae.bvae_model_t2i import BetaVAEModel
 class BVaeLDMWrapper(BetaVAEModel):
     def __init__(self, ckpt_path: str, device='cpu'):
         assert os.path.exists(ckpt_path), f'[BVaeWrapper] Checkpoint {ckpt_path} not found!'
-        checkpoint = torch.load(ckpt_path, map_location=device)
+        checkpoint = torch.load(
+            ckpt_path,
+            map_location=device,
+            weights_only=False,
+        )
 
         # Extract model config
         bvae_cfg = checkpoint["hyper_parameters"]["vae_cfg"]
@@ -50,7 +55,15 @@ class BVaeLDMWrapper(BetaVAEModel):
         
         
 if __name__ == "__main__":
-    # Test AutoencoderLDMWrapper
-    ckpt_path = "logs_dir/imnet256/beta-vae-skipViT-S-2/0.50x-0.50x-0.1b/2025-05-06/27129/checkpoints/last.ckpt"
-    model = BVaeLDMWrapper(ckpt_path)
+    ckpt_path = (
+        Path(__file__).resolve().parents[4]
+        / "models"
+        / "checkpoints"
+        / "BetaVAE_0.50x-1.00x-0.1b_last.ckpt"
+    )
+
+    print("Using checkpoint:", ckpt_path)
+    print("Exists:", ckpt_path.exists())
+
+    model = BVaeLDMWrapper(str(ckpt_path), device="cpu")
     print(model)
