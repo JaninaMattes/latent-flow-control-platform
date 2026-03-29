@@ -1,7 +1,12 @@
-import os 
+import os
+from pathlib import Path
+import sys 
 import torch
 
 from jutils import freeze
+
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../'))
+sys.path.append(project_root)
 
 from ldm.models.wrapper.autoencoder import AutoencoderLDMWrapper
 from ldm.frameworks.beta_vae.bvae_model import BetaVAEModel
@@ -44,7 +49,11 @@ class BVaeLDMWrapper(BetaVAEModel):
         
 if __name__ == "__main__":
     # Test AutoencoderLDMWrapper
-    config_path = "configs/autoencoder/ae_config.yaml"
-    ae_wrapper = AutoencoderLDMWrapper(config_path)
+    config_path = (
+        Path(__file__).resolve().parents[1]
+        / "configs"
+        / "ae_config.yaml"
+    )
+    ae_wrapper = AutoencoderLDMWrapper(str(config_path))
     model = ae_wrapper.get_model()
     print(model)

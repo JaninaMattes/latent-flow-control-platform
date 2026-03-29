@@ -120,7 +120,7 @@ class TrainerModuleLatentFlow(LightningModule):
         if exists(second_stage_cfg):
             flow_model = instantiate_from_config(second_stage_cfg)
             self.second_stage = torch.compile(flow_model, fullgraph=True)
-            freeze(self.second_stage)
+            freeze(self.second_stage) # type: ignore
             self.second_stage.eval()
 
         # KL Autoencoder (SD3) - first stage settings
@@ -128,7 +128,7 @@ class TrainerModuleLatentFlow(LightningModule):
         if exists(first_stage_cfg):
             first_stage = instantiate_from_config(first_stage_cfg)
             self.first_stage = torch.compile(first_stage, fullgraph=True)
-            freeze(self.first_stage)
+            freeze(self.first_stage) # type: ignore
             self.first_stage.eval()
 
         # LDM ß-VAE Autoencoder - third stage settings
@@ -142,7 +142,7 @@ class TrainerModuleLatentFlow(LightningModule):
                 backend = 'aot_eager'  # Default for CPU-only mode
             compile_fn = partial(torch.compile, fullgraph=True, backend=backend)
             self.third_stage = compile_fn(third_stage)
-            freeze(self.third_stage)
+            freeze(self.third_stage) # type: ignore
                 
             self.third_stage.eval()
 

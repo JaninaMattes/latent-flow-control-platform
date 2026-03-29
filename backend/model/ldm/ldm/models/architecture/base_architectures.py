@@ -14,14 +14,14 @@ class BaseAE(nn.Module):
     def __init__(self) -> None:
         super(BaseAE, self).__init__()
 
-    def encode(self, input: Tensor) -> List[Tensor]:
+    def encode(self, x: Tensor) -> List[Tensor]:
         raise NotImplementedError
 
-    def decode(self, input: Tensor) -> Any:
+    def decode(self, z: Tensor) -> Any:
         raise NotImplementedError
 
     @abstractmethod
-    def forward(self, *inputs: Tensor) -> Tensor:
+    def forward(self, *x: Tensor) -> Tensor:
         pass
 
     @abstractmethod

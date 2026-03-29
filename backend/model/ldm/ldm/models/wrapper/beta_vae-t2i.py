@@ -5,10 +5,8 @@ import torch
 
 from jutils import freeze
 
-
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../'))
 sys.path.append(project_root)
-
 
 from ldm.frameworks.beta_vae.bvae_model_t2i import BetaVAEModel
 
@@ -56,8 +54,7 @@ class BVaeLDMWrapper(BetaVAEModel):
         
 if __name__ == "__main__":
     ckpt_path = (
-        Path(__file__).resolve().parents[4]
-        / "models"
+        Path(__file__).resolve().parents[3]
         / "checkpoints"
         / "BetaVAE_0.50x-1.00x-0.1b_last.ckpt"
     )
