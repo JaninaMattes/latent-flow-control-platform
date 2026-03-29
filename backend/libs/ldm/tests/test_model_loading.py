@@ -10,18 +10,25 @@ def test_model_loads_successfully():
     """
     Integration test: load real checkpoint and verify model setup.
     """
-    checkpoint = Path(__file__).resolve().parents[1] / "models" / "your_checkpoint.ckpt"
+    checkpoint = (
+        Path(__file__).resolve().parents[3]
+        / "models"
+        / "checkpoints"
+        / "DITSXL_BETA05x10x_01b.ckpt"
+    )
+
+    assert checkpoint.exists(), f"Checkpoint not found: {checkpoint}"
 
     fm_module = TrainerModuleLatentFlow.load_from_checkpoint(
-        checkpoint=str(checkpoint),
-        map_location="cpu"
+        checkpoint_path=str(checkpoint),
+        map_location="cpu",
+        weights_only=False
     )
 
     fm_module.eval()
     freeze(fm_module.model)
     fm_module.to("cpu")
 
-    # Assertions
     assert fm_module is not None
     assert not fm_module.training
 
