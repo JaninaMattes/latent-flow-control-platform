@@ -2,6 +2,8 @@ import os
 import torch
 
 from jutils import freeze
+
+from ldm.models.wrapper.autoencoder import AutoencoderLDMWrapper
 from ldm.frameworks.beta_vae.bvae_model import BetaVAEModel
 
 

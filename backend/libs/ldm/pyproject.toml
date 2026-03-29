@@ -24,6 +24,10 @@ dev = [
     "torchdiffeq>=0.2.5",
     "wandb>=0.25.1",
     "webdataset>=1.0.2",
+    "diffusers>=0.30.0",
+    "transformers>=4.40.0",
+    "accelerate>=0.30.0",
+    "safetensors>=0.4.0",
 ]
 
 [tool.uv.sources]
