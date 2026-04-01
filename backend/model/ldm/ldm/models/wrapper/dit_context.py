@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 import sys
 import torch
 import torch.nn as nn
@@ -97,16 +96,6 @@ if __name__ == "__main__":
     legacy_attn = True
     ckpt_path = "checkpoints/SiT-XL-2-256x256.pt"
 
-    ckpt_path = (
-        Path(__file__).resolve().parents[5]
-        / "models"
-        / "checkpoints"
-        / "SiT-XL-2-256x256.pt"
-    )
-
-    print("Using checkpoint:", ckpt_path)
-    print("Exists:", ckpt_path.exists())
-
     model = DiTLDMWrapper(
         input_size,
         num_classes,
@@ -116,7 +105,7 @@ if __name__ == "__main__":
         num_heads=num_heads,
         learn_sigma=learn_sigma,
         legacy_attn=legacy_attn,
-        ckpt_path=str(ckpt_path),
+        ckpt_path=ckpt_path,
         freeze_backbone=False  # Set to True if you want to freeze layers
     )
     print(model)

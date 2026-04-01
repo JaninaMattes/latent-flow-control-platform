@@ -9,13 +9,13 @@ from ldm.models.nn.layers.resize import Downsample, Upsample
 from ldm.models.nn.layers.t_emb import timestep_embedding
 from ldm.models.nn.layers.helpers import zero_module
 
-class TimestepEmbedSequential(nn.Sequential, TimestepBlock): # type: ignore
+class TimestepEmbedSequential(nn.Sequential, TimestepBlock):
     """
     A sequential module that passes timestep embeddings to the children that
     support it as an extra input.
     """
 
-    def forward(self, x, emb): # type: ignore
+    def forward(self, x, emb):
         for layer in self:
             if isinstance(layer, TimestepBlock):
                 x = layer(x, emb)

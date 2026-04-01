@@ -361,7 +361,7 @@ class RectifiedFlowModel(nn.Module):
             net_cfg: Union[dict, nn.Module],
             schedule: str = "linear",
             sigma_min: float = 0.0,
-            timestep_sampler: dict | None = None,
+            timestep_sampler: dict = None,
         ):
         """
         Flow Matching, Stochastic Interpolants, or Rectified Flow model. :)
