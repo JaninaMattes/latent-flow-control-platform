@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from io import BytesIO
+import logging
+from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -12,26 +14,34 @@ from ldm.ldm.inference.config import GenerationConfig
 from ldm.trainer import TrainerModuleLatentFlow
 
 
+logger = logging.getLogger(__name__)
+            
 
 class LatentFlowInferenceService:
     def __init__(
         self,
-        flow_ckpt_path: str,
+        flow_ckpt_name: str,
         device: str = "cpu",
-        default_image_size: tuple[int, int] = (256, 256),
+        default_img_size: tuple[int, int] = (256, 256),
     ) -> None:
-        self.flow_ckpt_path = flow_ckpt_path
+        self.flow_ckpt_path = (
+            Path(__file__).resolve().parents[1]
+            / "checkpoints"
+            / flow_ckpt_name
+        )
         self.device = torch.device(device)
-        self.default_image_size = default_image_size
+        self.default_img_size = default_img_size
 
         self._fm_module: TrainerModuleLatentFlow | None = None
         self._loaded = False
 
     @property
     def fm_module(self) -> TrainerModuleLatentFlow:
+        # ensures that only one instance is loaded
         if self._fm_module is None:
             raise RuntimeError("Model is not loaded. Call load() first.")
         return self._fm_module
+
 
     def load_model(self) -> None:
         if self._loaded:
@@ -49,12 +59,13 @@ class LatentFlowInferenceService:
         self._fm_module = fm_module
         self._loaded = True
 
+
     def preprocess_image_bytes(self, image_bytes: bytes) -> torch.Tensor:
         image = Image.open(BytesIO(image_bytes)).convert("RGB")
         return self.preprocess_pil(image)
 
     def preprocess_pil(self, image: Image.Image) -> torch.Tensor:
-        image = image.convert("RGB").resize(self.default_image_size)
+        image = image.convert("RGB").resize(self.default_img_size)
         arr = np.asarray(image, dtype=np.float32) / 255.0
         x = torch.from_numpy(arr).permute(2, 0, 1).unsqueeze(0)  # [1, C, H, W]
 
@@ -70,36 +81,77 @@ class LatentFlowInferenceService:
         x = self.preprocess_pil(image)
         return self.predict_from_tensor(x, **kwargs)
     
-    def forward_noise_encoding(self, x: torch.Tensor, t: int, y: int, sample_kwargs: dict) -> torch.Tensor:
-        latent = self.fm_module.encode_first_stage(x) # First stage
-        xt = self.fm_module.encode_second_stage(latent, t, y, sample_kwargs=sample_kwargs) # Second stage
-        zt = self.fm_module.encode_third_stage(xt)
-        return zt
-
-    def reverse_noise_decoding(self):
-        ...
-
     @torch.inference_mode()
-    def predict_from_tensor(
-        self,
-        x: torch.Tensor,
-        labels: torch.Tensor | None = None,
-        cfg: GenerationConfig | None = None,
-    ) -> torch.Tensor:
+    def encode_from_image(
+            self, 
+            x: torch.Tensor, 
+            timestep: int, 
+            labels: torch.Tensor | None = None, 
+            cfg: GenerationConfig | None = None,
+        ) -> torch.Tensor:
+        """
+        Encoding process with Euler sampling from x1 (clean sample) to x0 (noise) in num_steps.
+        Args:
+            x: source minibatch (bs, *dim)
+            t: timestep minibatch (bs, *dim)
+            labels: class minibatch (bs, *dim)
+            kwargs: additional arguments for the network (e.g. conditioning information)
+        """
+        # Check if model is already loaded
         if not self._loaded:
             self.load_model()
-
+        
         cfg = cfg or GenerationConfig()
         x = x.to(self.device)
 
-        context = self.fm_module.encode_third_stage(x)
-        z = torch.randn_like(x)
+        # TODO: Adapt the correct setup for encoding process
+        sample_kwargs = {
+            "num_steps": cfg.num_steps,
+            "progress": False,
+            "context": None,
+            "y": labels if cfg.use_labels else None,
+            "cfg_scale": cfg.cfg_scale,
+            "ccfg_scale": cfg.ccfg_scale,
+            "uc_cond_context": None,
+            "uc_cond": None,
+        }
+        try: 
+            latent = self.fm_module.encode_first_stage(x) # First stage
+            xt = self.fm_module.encode_second_stage(
+                latent, timestep, labels, **sample_kwargs) # Second stage
+            zt = self.fm_module.encode_third_stage(xt)
+        except Exception:
+            logging.error("FlowEcodingError", exc_info=True)
+        return zt
+
+    @torch.inference_mode()
+    def generate_from_latent(
+        self, 
+        latents: torch.Tensor, 
+        labels: torch.Tensor | None = None, 
+        cfg: GenerationConfig | None = None,
+    ) -> torch.Tensor:
+        """
+        Args:
+            z: source latent minibatch (bs, *dim)
+            labels: class minibatch (bs, *dim)
+            kwargs: additional arguments for the network (e.g. conditioning information)
+        """
+        # Check if model is already loaded
+        if not self._loaded:
+            self.load_model()
+        
+        cfg = cfg or GenerationConfig()
+        latents = latents.to(self.device)
+
+        context = self.fm_module.encode_third_stage(latents)
+        z = torch.randn_like(latents)
 
         uc_context = torch.zeros_like(context)
         uc_label = None
-
+        
         if cfg.use_labels:
-            batch_size = x.shape[0]
+            batch_size = latents.shape[0]
             uc_label = torch.full(
                 (batch_size,),
                 cfg.num_classes,
@@ -123,6 +175,19 @@ class LatentFlowInferenceService:
         generated = self.fm_module.model.generate(x=z, **sample_kwargs)
         decoded = self.fm_module.decode_first_stage(generated)
         return decoded.detach()
+    
+
+    @torch.inference_mode()
+    def predict_from_tensor(
+        self,
+        x: torch.Tensor,
+        labels: torch.Tensor | None = None,
+        cfg: GenerationConfig | None = None,
+    ) -> torch.Tensor:
+        if not self._loaded:
+            self.load_model()
+        raise NotImplemented("Not yet implemented!")
+
 
     @torch.inference_mode()
     def interpolate(

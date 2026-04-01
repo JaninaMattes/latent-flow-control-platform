@@ -207,13 +207,13 @@ class TrainerModuleLatentFlow(LightningModule):
         return out
     
     @torch.no_grad()
-    def encode_first_stage(self, x):
+    def encode_first_stage(self, x: torch.Tensor):
         if exists(self.first_stage):
             x = self.first_stage.encode(x)
         return x
     
     @torch.no_grad()
-    def decode_first_stage(self, z):
+    def decode_first_stage(self, z: torch.Tensor):
         if exists(self.first_stage):
             z = self.first_stage.decode(z)
         return z
@@ -226,7 +226,7 @@ class TrainerModuleLatentFlow(LightningModule):
         return xt
     
     @torch.no_grad()
-    def decode_second_stage(self, z, label=None, context=None, sample_kwargs=None):
+    def decode_second_stage(self, z: torch.Tensor, label=None, context=None, sample_kwargs=None):
         """ Euler sampling """
         sample_kwargs = sample_kwargs or {}
         if exists(self.second_stage):
@@ -234,14 +234,14 @@ class TrainerModuleLatentFlow(LightningModule):
         return z
     
     @torch.no_grad()
-    def encode_third_stage(self, x):
+    def encode_third_stage(self, x: torch.Tensor):
         if exists(self.third_stage):
             out = self.third_stage.encode(x)['latent_dist']
             x = out.sample() # Autoencoder trained to extract semantic context
         return x
     
     @torch.no_grad()
-    def decode_third_stage(self, z):
+    def decode_third_stage(self, z: torch.Tensor):
         if exists(self.third_stage):
             z = self.third_stage.decode(z)['sample']
         return z
