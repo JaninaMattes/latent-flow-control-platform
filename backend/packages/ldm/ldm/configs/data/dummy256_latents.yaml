@@ -1,0 +1,26 @@
+name: Latent_Dummy_256
+num_classes: 1000
+class_labels: [0, 1, 154, 158, 250, 236, 291, 292, 294, 296, 330, 332, 339, 340, 954, 957]
+target: ldm.dataloader.dataloader.dataloader.DataModuleFromConfig
+params:
+  batch_size: 16
+  num_workers: 8
+  drop_last: True
+
+  train:
+    target: ldm.dataloader.dataloader.dataloader.LatentDummyDataset
+    params:
+      classes: [0, 1, 154, 158, 250, 236, 291, 292, 294, 296, 330, 332, 339, 340, 953, 954]
+      timestep: 0.5
+      image: [3, 256, 256]    # Image shape
+      latent: [4, 32, 32]     # Latent shape
+      label: [1]              # Label shape
+
+  validation:
+    target: ldm.dataloader.dataloader.dataloader.LatentDummyDataset
+    params:
+      classes: [0, 1, 154, 158, 250, 236, 291, 292, 294, 296, 330, 332, 339, 340, 953, 954]
+      timestep: 0.5
+      image: [3, 256, 256]    # Image shape
+      latent: [4, 32, 32]     # Latent shape
+      label: [1]              # Label shape
