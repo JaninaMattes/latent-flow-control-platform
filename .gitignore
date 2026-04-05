@@ -213,4 +213,5 @@ __marimo__/
 *.safetensors
 *.pt
 
-backend/fastapi-ldm/models/*.ckpt
+# model datasets
+*.hdf5

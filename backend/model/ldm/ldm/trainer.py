@@ -1,6 +1,6 @@
 import logging
 from functools import partial
-from typing import Optional
+from typing import Any, Optional
 
 import einops
 import numpy as np
@@ -19,6 +19,7 @@ from PIL import Image
 from torchmetrics.image.fid import FrechetInceptionDistance
 
 from ldm.ema import EMA
+from ldm.frameworks.beta_vae.bvae_model_t2i import BetaVAEModel
 from ldm.helpers import denorm_tensor, resize_ims
 
 logger = logging.getLogger(__name__)
@@ -148,7 +149,7 @@ class TrainerModuleLatentFlow(LightningModule):
             self.first_stage.eval()
 
         # LDM ß-VAE Autoencoder - third stage settings
-        self.third_stage = None
+        self.third_stage: BetaVAEModel | None = None
         if exists(third_stage_cfg):
             third_stage = instantiate_from_config(third_stage_cfg)
             # TODO: Fix bug in compile function
@@ -214,7 +215,7 @@ class TrainerModuleLatentFlow(LightningModule):
     def stop_training_method(self) -> None:
         pass
 
-    def configure_optimizers(self):
+    def configure_optimizers(self) -> Any:  # noqa: ANN401
         if self.optim == "adamw":
             opt = torch.optim.AdamW(
                 self.parameters(), lr=self.lr, weight_decay=self.weight_decay
@@ -231,19 +232,25 @@ class TrainerModuleLatentFlow(LightningModule):
         return out
 
     @torch.no_grad()
-    def encode_first_stage(self, x: torch.Tensor):
+    def encode_first_stage(self, x: torch.Tensor) -> torch.Tensor:
         if exists(self.first_stage):
             x = self.first_stage.encode(x)
         return x
 
     @torch.no_grad()
-    def decode_first_stage(self, z: torch.Tensor):
+    def decode_first_stage(self, z: torch.Tensor) -> torch.Tensor:
         if exists(self.first_stage):
             z = self.first_stage.decode(z)
         return z
 
     @torch.no_grad()
-    def encode_second_stage(self, latent, t, y=None, sample_kwargs=None):
+    def encode_second_stage(
+        self,
+        latent: torch.Tensor,
+        t: float,
+        y: torch.Tensor | None = None,
+        sample_kwargs: dict | None = None,
+    ) -> torch.Tensor:
         sample_kwargs = sample_kwargs or {}
         if exists(self.second_stage):
             xt, _ = self.second_stage.encode(
@@ -254,7 +261,7 @@ class TrainerModuleLatentFlow(LightningModule):
     @torch.no_grad()
     def decode_second_stage(
         self, z: torch.Tensor, label=None, context=None, sample_kwargs=None
-    ):
+    ) -> torch.Tensor:
         """Euler sampling"""
         sample_kwargs = sample_kwargs or {}
         if exists(self.second_stage):
@@ -262,14 +269,14 @@ class TrainerModuleLatentFlow(LightningModule):
         return z
 
     @torch.no_grad()
-    def encode_third_stage(self, x: torch.Tensor):
+    def encode_third_stage(self, x: torch.Tensor) -> torch.Tensor:
         if exists(self.third_stage):
             out = self.third_stage.encode(x)["latent_dist"]
             x = out.sample()  # Autoencoder trained to extract semantic context
         return x
 
     @torch.no_grad()
-    def decode_third_stage(self, z: torch.Tensor):
+    def decode_third_stage(self, z: torch.Tensor) -> torch.Tensor:
         if exists(self.third_stage):
             z = self.third_stage.decode(z)["sample"]
         return z
