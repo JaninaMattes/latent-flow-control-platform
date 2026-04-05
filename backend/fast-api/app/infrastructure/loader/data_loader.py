@@ -1,5 +1,7 @@
 
-from ldm.dataloader.dataloader.hdf5_dataloader import HDF5DataModule
+
+from backend.packages.ldm.ldm.dataloader.dataloader.hdf5_dataloader import HDF5DataModule
+
 
 def load_data(data_path: str, batch_size: int, source_time)
     """
