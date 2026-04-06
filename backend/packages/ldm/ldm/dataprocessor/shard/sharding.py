@@ -273,7 +273,6 @@ def write_stratified_stream_to_shards(
     (out_dir / f"{prefix}-metadata.json").write_text(
         json.dumps(metadata, indent=2, sort_keys=True)
     )
-
     return state
 
 
