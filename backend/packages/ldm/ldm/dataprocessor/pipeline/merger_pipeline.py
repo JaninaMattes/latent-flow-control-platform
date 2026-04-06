@@ -14,8 +14,9 @@ from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
 
-# Load custom modules
 from ldm.dataprocessor.sampler.data_handler import NumpyDataHandler
+
+# Load custom modules
 from ldm.flow import FlowModel
 from ldm.models.transformer.dit import DiT_models
 

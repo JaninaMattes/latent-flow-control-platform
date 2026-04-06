@@ -1,14 +1,14 @@
 import logging
 import os
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, List, Optional
 
 import h5py
 import numpy as np
 import pytorch_lightning as pl
 import torch
 import torchvision
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader, Dataset, WeightedRandomSampler
 from torchvision import transforms
 
 if not logging.getLogger().handlers:
@@ -26,6 +26,8 @@ logging.basicConfig(level=logging.INFO)
 
 # ------------------------------------------------------------------------------
 class HDF5LatentsDataset(Dataset):
+    """ """
+
     def __init__(
         self,
         hdf5_file: str,
@@ -336,7 +338,7 @@ class HDF5DataModule(pl.LightningDataModule):
         self.val_dataset = None
         self.test_dataset = None
 
-    def setup(self, stage: str = None):
+    def setup(self, stage: str = "fit") -> None:
         """Set up datasets for different stages ('fit', 'validate', 'test', 'predict')."""
         mean = (127.0, 127.0, 127.0)
         std = (127.0, 127.0, 127.0)
@@ -489,7 +491,7 @@ class HDF5DataModule(pl.LightningDataModule):
         )
         return test_data
 
-    def get_class_weights(labels: list):
+    def get_class_weights(self, labels: List[int]) -> torch.Tensor:
         """Use binning approach.
         https://discuss.pytorch.org/t/sampling-with-replacement/26474/19
         """
@@ -501,12 +503,10 @@ class HDF5DataModule(pl.LightningDataModule):
         weight = 1.0 / class_sample_count.float()
         return torch.tensor([weight[t] for t in target])
 
-    def get_random_weightsampler(self, target_labels: list):
+    def get_random_weightsampler(
+        self, target_labels: List[int], replacement: bool = True
+    ) -> Optional[WeightedRandomSampler]:
         """Return a WeightedRandomSampler to correct for class imbalance."""
-        if not target_labels:
-            logging.warning("Target labels list is empty. Cannot create sampler.")
-            return None
-
         target_np = np.array(target_labels)
         unique_labels, counts = np.unique(target_np, return_counts=True)
         logging.info(f"Unique labels: {unique_labels}, Counts: {counts}")
@@ -529,15 +529,13 @@ class HDF5DataModule(pl.LightningDataModule):
             return None
 
         # Approach 1:
-        weights_tensor = torch.DoubleTensor(sample_weights)
-        sampler = torch.utils.data.WeightedRandomSampler(
-            weights_tensor, num_samples=len(weights_tensor), replacement=True
-        )
+        weights_tensor = torch.as_tensor(sample_weights, dtype=torch.float32)
 
-        # Approach 2:
-        # samples_weight = get_class_weights(dataset.get_all_labels())
-        # sampler = torch.utils.data.WeightedRandomSampler(weights=samples_weight, num_samples=len(dataset), replacement=True)
-        return sampler
+        return WeightedRandomSampler(
+            weights=weights_tensor,
+            num_samples=len(weights_tensor),
+            replacement=replacement,
+        )
 
 
 if __name__ == "__main__":

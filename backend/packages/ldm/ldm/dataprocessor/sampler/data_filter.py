@@ -1,77 +1,87 @@
 import logging
 import os
-import sys
+from functools import partial
+from typing import Any, Optional, Sequence
 
 import numpy as np
 import torch
 import torchvision
 import webdataset as wds
-from typing import Any, List, Optional
-
 from jutils import instantiate_from_config
 
 
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
-sys.path.append(project_root)
-
-
 ################################################################
-#                   Webdatset Utilities                        #
+#                   WebDataset Utilities                       #
 ################################################################
-def dict_collation_fn(samples, combine_tensors=True, combine_scalars=True):
-    """Take a list  of samples (as dictionary) and create a batch, preserving the keys.
-    If `tensors` is True, `ndarray` objects are combined into
-    tensor batches.
-    :param dict samples: list of samples
-    :param bool tensors: whether to turn lists of ndarrays into a single ndarray
-    :returns: single sample consisting of a batch
-    :rtype: dict
-    """
-    keys = set.intersection(*[set(sample.keys()) for sample in samples])
+def dict_collation_fn(
+    samples: list[dict[str, Any]],
+    combine_tensors: bool = True,
+    combine_scalars: bool = True,
+) -> dict[str, Any]:
+    """Collate a list of dict samples into a batched dict."""
+    if not samples:
+        return {}
+
+    keys = set.intersection(*(set(sample.keys()) for sample in samples))
     batched = {key: [] for key in keys}
 
-    for s in samples:
-        [batched[key].append(s[key]) for key in batched]
+    for sample in samples:
+        for key in batched:
+            batched[key].append(sample[key])
 
-    result = {}
-    for key in batched:
-        if isinstance(batched[key][0], (int, float)):
-            if combine_scalars:
-                result[key] = np.array(list(batched[key]))
-        elif isinstance(batched[key][0], torch.Tensor):
-            if combine_tensors:
-                result[key] = torch.stack(list(batched[key]))
-        elif isinstance(batched[key][0], np.ndarray):
-            if combine_tensors:
-                result[key] = np.array(list(batched[key]))
+    result: dict[str, Any] = {}
+    for key, values in batched.items():
+        first = values[0]
+
+        if isinstance(first, (int, float)):
+            result[key] = np.array(values) if combine_scalars else values
+        elif isinstance(first, torch.Tensor):
+            result[key] = torch.stack(values) if combine_tensors else values
+        elif isinstance(first, np.ndarray):
+            result[key] = np.array(values) if combine_tensors else values
         else:
-            result[key] = list(batched[key])
+            result[key] = values
+
     return result
 
 
-def identity(x):
+def identity(x: torch.Tensor) -> torch.Tensor:
     return x
 
 
-#####################################################
-#       Filter for Micro-subsets in WebDataset      #
-#####################################################
+def normalize_to_minus1_1(x: torch.Tensor) -> torch.Tensor:
+    return x * 2.0 - 1.0
 
 
+def sample_in_class_labels(
+    sample: dict[str, Any], class_labels: frozenset[int]
+) -> bool:
+    return int(sample.get("cls", -1)) in class_labels
+
+
+################################################################
+#       Filter for Micro-subsets in WebDataset                 #
+################################################################
 def make_filtered_loader(
     data: Any,
     data_cfg: Any,
-    class_labels: List[int],
+    class_labels: Sequence[int],
     train: bool = True,
     num_batches: Optional[int] = None,
+    num_workers: Optional[int] = None,
+    prefetch_factor: Optional[int] = None,
+    persistent_workers: Optional[bool] = None,
 ) -> wds.WebLoader:
-    """Create a filtered WebDataset loader."""
+    """Create a filtered WebDataset loader that works locally and with multiprocessing."""
     tars = os.path.join(data.tar_base, data_cfg.shards)
     node_splitter = (
         wds.shardlists.split_by_node
         if data.multinode
         else wds.shardlists.single_node_only
     )
+
+    class_labels_set = frozenset(int(x) for x in class_labels)
+    class_filter = partial(sample_in_class_labels, class_labels=class_labels_set)
 
     dset_pipe = (
         wds.WebDataset(
@@ -82,18 +92,18 @@ def make_filtered_loader(
         )
         .repeat()
         .decode("rgb", handler=wds.warn_and_continue)
-        .select(lambda sample: int(sample.get("cls", -1)) in class_labels)
+        .select(class_filter)
         .map(data.filter_out_keys, handler=wds.warn_and_continue)
     )
 
     if num_batches is not None:
         bs = data.batch_size if train else data.val_batch_size
         dset_pipe = dset_pipe.slice(num_batches * bs)
-        logging.info(f"Limited dataset to {num_batches} batches.")
+        logging.info("Limited dataset to %s batches.", num_batches)
 
     image_transforms = [
         torchvision.transforms.ToTensor(),
-        torchvision.transforms.Lambda(lambda x: x * 2.0 - 1.0),  # Normalize to [-1,1]
+        torchvision.transforms.Lambda(normalize_to_minus1_1),
     ]
 
     if "image_transforms" in data_cfg:
@@ -111,17 +121,27 @@ def make_filtered_loader(
         dset_pipe = dset_pipe.rename(**data_cfg.rename)
 
     bs = data.batch_size if train else data.val_batch_size
-    nw = data.num_workers if train else data.val_num_workers
+    default_nw = data.num_workers if train else data.val_num_workers
+    nw = default_nw if num_workers is None else num_workers
+
+    if persistent_workers is None:
+        persistent_workers = nw > 0
+
+    loader_kwargs: dict[str, Any] = {
+        "batch_size": None,
+        "shuffle": False,
+        "num_workers": nw,
+    }
+
+    if nw > 0:
+        loader_kwargs["prefetch_factor"] = prefetch_factor
+        loader_kwargs["persistent_workers"] = persistent_workers
 
     return wds.WebLoader(
         dset_pipe.batched(bs, partial=False, collation_fn=dict_collation_fn),
-        batch_size=None,
-        shuffle=False,
-        num_workers=nw,
-        prefetch_factor=2,  # Overlap data loading with model training
+        **loader_kwargs,
     )
 
 
 if __name__ == "__main__":
-    # Test the function
     pass

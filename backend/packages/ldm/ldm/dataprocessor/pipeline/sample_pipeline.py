@@ -301,9 +301,9 @@ if __name__ == "__main__":
     project_root = this_file.parents[3]
 
     dataset_root = project_root / "dataset"
-    hdf5_file = dataset_root / "imagenet-256" / "hdf5"
+    hdf5_file = dataset_root / "imagenet-256"
     dataset_dir = dataset_root / "imagenet-256"
-    dataset_cfg = project_root / "configs" / "data" / "imagenet256_mvl.yaml"
+    dataset_cfg = project_root / "ldm" / "configs" / "data" / "imagenet256_mvl.yaml"
 
     selected_timesteps = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
     print(f"Selected timesteps: {selected_timesteps}")
@@ -313,70 +313,6 @@ if __name__ == "__main__":
         1,
         5,
         6,
-        14,
-        22,
-        43,
-        46,
-        44,
-        46,
-        94,
-        96,
-        99,
-        100,
-        291,
-        292,
-        293,
-        289,
-        330,
-        332,
-        330,
-        332,
-        339,
-        340,
-        346,
-        347,
-        353,
-        355,
-        385,
-        386,
-        388,
-        105,
-        130,
-        128,
-        151,
-        162,
-        170,
-        163,
-        232,
-        234,
-        246,
-        245,
-        250,
-        247,
-        277,
-        285,
-        286,
-        287,
-        323,
-        325,
-        504,
-        505,
-        949,
-        953,
-        963,
-        959,
-        947,
-        938,
-        47,
-        48,
-        84,
-        9,
-        160,
-        167,
-        218,
-        219,
-        249,
-        244,
     ]
 
     print("dataset_root:", dataset_root)
