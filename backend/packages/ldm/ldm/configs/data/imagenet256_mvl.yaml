@@ -2,19 +2,20 @@ name: ImageNet_256
 num_classes: 1000
 target: ldm.dataloader.hdf5_dataset.dataloader.WebDataModuleFromConfig
 params:
-  tar_base:
-    - /export/compvis-nfs/user/<user_id>/dataset/imagenet_shards
-  batch_size: 16
-  num_workers: 4
+  tar_base: /export/group/datasets/ILSVRC/wds_shards
+  batch_size: 200
+  num_workers: 8
   val_num_workers: 2
   multinode: True
+  remove_keys:
+    - pickle
+    - json
   train:
-    shards: 'train-{000000..000105}.tar'
-    image_key: image.jpg
+    shards: 'ImageNetTrain-train-{000000..000284}.tar'
+    image_key: jpeg
     rename:
-      image: image.jpg
-      label_str: label
-      label: class.cls
+      image: jpeg
+      label: cls
     image_transforms:
       - target: torchvision.transforms.RandomHorizontalFlip
         params:
@@ -29,12 +30,11 @@ params:
           size: 256
 
   validation:
-    shards: 'val-{000000..000009}.tar'
-    image_key: image.jpg
+    shards: 'ImageNetValidation-validation-{000000..000012}.tar'
+    image_key: jpeg
     rename:
-      image: image.jpg
-      label_str: label
-      label: class.cls
+      image: jpeg
+      label: cls
     image_transforms:
       - target: torchvision.transforms.Resize
         params:
