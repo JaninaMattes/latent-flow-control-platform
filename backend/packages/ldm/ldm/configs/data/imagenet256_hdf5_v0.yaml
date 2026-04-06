@@ -9,7 +9,7 @@ class_labels: [
   330, 332, 339, 340, 954, 957] # V0 (extended) datasets
 
 
-target: ldm.dataloader.dataloader.hdf5_dataloader.HDF5DataModule
+target: ldm.dataloader.hdf5_dataset.hdf5_dataloader.HDF5DataModule
 params:
   hdf5_file: ./../ldm/dataset/imagenet256-dataset-T000004.hdf5
   num_workers: 8
@@ -23,7 +23,7 @@ params:
   # The following parameters are used to set the number of workers 
   # for the training and validation dataloaders.
   train:
-    target: ldm.dataloader.dataloader.hdf5_dataloader.HDF5DataModule
+    target: ldm.dataloader.hdf5_dataset.hdf5_dataloader.HDF5DataModule
     params:
       group_name: train
       source_timestep: 0.50
@@ -31,7 +31,7 @@ params:
       balance_classes: True
   
   validation:
-    target: ldm.dataloader.dataloader.hdf5_dataloader.HDF5DataModule
+    target: ldm.dataloader.hdf5_dataset.hdf5_dataloader.HDF5DataModule
     params:
       group_name: validation
       source_timestep: 0.50

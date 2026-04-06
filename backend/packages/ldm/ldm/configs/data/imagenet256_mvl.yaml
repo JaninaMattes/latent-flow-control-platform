@@ -1,6 +1,6 @@
 name: ImageNet_256
 num_classes: 1000
-target: ldm.dataloader.dataloader.dataloader.WebDataModuleFromConfig
+target: ldm.dataloader.hdf5_dataset.dataloader.WebDataModuleFromConfig
 params:
   tar_base: /export/group/datasets/ILSVRC/wds_shards
   batch_size: 200
