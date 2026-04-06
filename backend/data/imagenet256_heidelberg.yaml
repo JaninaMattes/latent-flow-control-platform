@@ -1,9 +1,9 @@
 name: ImageNet_256
 num_classes: 1000
-target: ldm.dataloader.dataloader.dataloader.WebDataModuleFromConfig
+target: ldm.dataloader.hdf5_dataset.dataloader.WebDataModuleFromConfig
 params:
   tar_base:
-    - /export/compvis-nfs/user/jfischer/dataset/imagenet_shards
+    - /export/compvis-nfs/user/<user_id>/dataset/imagenet_shards
   batch_size: 16
   num_workers: 4
   val_num_workers: 2
