@@ -20,7 +20,7 @@ git+https://github.com/joh-schb/jutils.git#egg=jutils
 # FastAPI ecosystem
 fastapi==0.122.0
 uvicorn==0.38.0
-starlette==0.50.0
+starlette==1.0.1
 fastapi-cli==0.0.16
 typer==0.20.0
 anyio==4.11.0
